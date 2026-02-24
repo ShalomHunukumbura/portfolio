@@ -35,7 +35,7 @@ note: "Activity based planning"
 },
 {
 title: "The Iceberg secret, revealed",
-url: "https://www.joelonsoftware.com/2002/02/13/the-iceberg-secret-revealed/"
+url: "https://www.joelonsoftware.com/2002/02/13/the-iceberg-secret-revealed/",
 note: "Reality of software development"
 }
     ],
