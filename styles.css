@@ -478,6 +478,25 @@ h3 {
   font-size: 0.93rem;
 }
 
+.project-links {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.1rem;
+}
+
+.project-links .project-link {
+  margin-top: 0;
+}
+
+.project code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
 /* Skills */
 
 .skills-grid {

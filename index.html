@@ -117,6 +117,32 @@
         <h2 class="section-title">Selected Projects</h2>
         <div class="project-grid">
           <article class="card project">
+            <h3>alembic-guard</h3>
+            <p class="project-kicker">Migration linter for PostgreSQL · published on PyPI</p>
+            <p>Catches Alembic migrations that lock Postgres tables or break running code before they reach production. Parses migrations with Python's <code>ast</code> (never executes them), ships 10 rules with suggested fixes, and runs as a CLI or a GitHub Action that annotates pull requests.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>Alembic</li><li>PostgreSQL</li><li>AST</li><li>GitHub Actions</li><li>PyPI</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="project-link" href="https://pypi.org/project/alembic-guard/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard-demo/pulls" target="_blank" rel="noopener noreferrer">Live demo PR →</a>
+            </div>
+          </article>
+
+          <article class="card project">
+            <h3>DocSage</h3>
+            <p class="project-kicker">RAG from first principles, no LangChain</p>
+            <p>Question answering over 37 engineering documents with cited answers. Hybrid retrieval (FAISS embeddings + BM25, merged with reciprocal rank fusion) puts the right document first for 93% of questions vs 86% for either alone, measured on a 54-question eval set. Refuses off-topic questions instead of guessing.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>FAISS</li><li>BM25</li><li>FastAPI</li><li>LLM</li><li>Docker</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/docsage" target="_blank" rel="noopener noreferrer">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="card project">
             <h3>Actify</h3>
             <p class="project-kicker">AI-powered meeting action tracker</p>
             <p>Turns unstructured meeting notes into structured, assignable action items using the Gemini API, with JWT auth, per-user task ownership, filtering and export.</p>

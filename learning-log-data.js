@@ -1,5 +1,4 @@
-// Fallback copy of learning-log-store.json for file:// viewing. Regenerate after editing the store:
-// node -e "const d=require('./learning-log-store.json');require('fs').writeFileSync('learning-log-data.js', 'window.learningLogData = '+JSON.stringify(d,null,2)+';\n')"
+// Fallback copy of learning-log-store.json for file:// viewing. Regenerate after editing the store (see README).
 window.learningLogData = [
   {
     "month": "September 2026",
@@ -39,8 +38,9 @@ window.learningLogData = [
       "Store timestamps in UTC and convert at the edges; business dates (filing deadlines) are a separate concept from instants."
     ],
     "built": [
-      "Redesigned this portfolio and moved the learning log to a single committed JSON source so updates publish reliably.",
-      "Started a small evaluation set of real compliance questions to compare RAG prompt variants."
+      "Built DocSage, a RAG pipeline from scratch (FAISS + BM25 hybrid retrieval, cited answers) with a 54-question eval set showing hybrid search beats either method alone.",
+      "Built and published alembic-guard to PyPI: a linter and GitHub Action that flags Alembic migrations likely to lock Postgres tables or break running code.",
+      "Redesigned this portfolio and moved the learning log to a single committed JSON source so updates publish reliably."
     ]
   },
   {
