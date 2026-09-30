@@ -1,6 +1,4 @@
-// Fallback copy of learning-log-store.json for file:// viewing. Regenerate after editing the store:
-// node -e "const d=require('./learning-log-store.json');require('fs').writeFileSync('learning-log-data.js', 'window.learningLogData = '+JSON.stringify(d,null,2)+';\n')"
-window.learningLogData = [
+[
   {
     "month": "September 2026",
     "books": [
@@ -378,4 +376,4 @@ window.learningLogData = [
       "Improved log structure for easier month-by-month updates."
     ]
   }
-];
+]

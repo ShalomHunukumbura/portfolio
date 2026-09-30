@@ -3,157 +3,231 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shalom Hunukumbura | Portfolio</title>
+    <title>Shalom Hunukumbura | Full Stack Developer</title>
     <meta
       name="description"
-      content="Portfolio of Shalom Hunukumbura, Associate Software Engineer focused on full-stack and AI-powered applications."
+      content="Portfolio of Shalom Hunukumbura, Full Stack Developer building production platforms and AI-powered applications with Python, FastAPI, Next.js and TypeScript."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="index.html">SH<span>.</span></a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="learning-log.html">Learning Log</a>
+        </nav>
+      </div>
+    </header>
+
     <main class="container">
-      <nav class="site-nav">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="learning-log.html">Learning Log</a>
-      </nav>
-
-      <header class="hero section">
-        <p class="eyebrow">Portfolio</p>
+      <section class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>Malabe, Sri Lanka</p>
         <h1>Shalom Hunukumbura</h1>
-        <p class="subtitle">Associate Software Engineer | Full-Stack Developer</p>
-        <p>
-          Associate Software Engineer with hands-on experience building production-ready
-          full-stack platforms across business management, compliance, and finance domains.
-          Experienced with FastAPI, Flask, PostgreSQL, Next.js, React, and TypeScript.
+        <p class="role">Full Stack Developer</p>
+        <p class="lead">
+          I build production-grade business, taxation and compliance platforms end to end:
+          REST APIs, relational data models, frontends and releases. I also build AI-powered
+          applications with RAG and LLM integration for finance and compliance use cases.
         </p>
-        <ul class="meta-list">
-          <li>Athurugiriya, Sri Lanka</li>
-          <li><a href="tel:+94761645296">+94 76 164 5296</a></li>
-          <li><a href="mailto:benjaminshalom1999@gmail.com">benjaminshalom1999@gmail.com</a></li>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="mailto:benjaminshalom1999@gmail.com">Get in touch</a>
+          <a class="btn" href="shalom_hunukumbura_resume.pdf" target="_blank" rel="noopener">Download CV</a>
+          <a class="btn btn-ghost" href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+        <ul class="tag-list hero-stack" aria-label="Core stack">
+          <li>Python</li>
+          <li>FastAPI</li>
+          <li>Next.js</li>
+          <li>TypeScript</li>
+          <li>PostgreSQL</li>
+          <li>AI / LLM</li>
         </ul>
-      </header>
+      </section>
 
-      <section class="section">
-        <h2>Technical Skills</h2>
-        <div class="grid two-col">
-          <article>
-            <h3>Languages</h3>
-            <p>Python, TypeScript, JavaScript</p>
+      <section class="stats" aria-label="Highlights">
+        <div class="stat"><strong>15</strong><span>production services contributed to</span></div>
+        <div class="stat"><strong>140+</strong><span>REST endpoints designed &amp; integrated</span></div>
+        <div class="stat"><strong>240+</strong><span>merged pull requests</span></div>
+        <div class="stat"><strong>46</strong><span>Alembic migrations authored</span></div>
+      </section>
+
+      <section class="section" id="experience">
+        <h2 class="section-title">Experience</h2>
+
+        <div class="timeline">
+          <article class="card timeline-item">
+            <div class="card-head">
+              <div>
+                <h3>Software Engineer, Full Stack Developer</h3>
+                <p class="company">Xaventra · BizAdvisor Platform</p>
+              </div>
+              <p class="date">Aug 2025 - Present</p>
+            </div>
+            <ul class="bullets">
+              <li>Build and ship features across a 15-service production platform covering taxation, accounting, incorporation and compliance, authoring 170+ merged PRs on a 6-engineer team.</li>
+              <li>Design and integrate REST APIs across FastAPI and Flask services on PostgreSQL, contributing to 140+ endpoints consumed by Next.js / TypeScript frontends.</li>
+              <li>Own features end to end across 12 services, including invoicing, payments, promotions and incorporation workflows, from schema and business logic to UI and release.</li>
+              <li>Diagnose production incidents through log analysis, database inspection and API tracing, restoring service with minimal downtime and documenting root causes.</li>
+              <li>Author 46 Alembic migrations and maintain 8 GitHub Actions CI/CD workflows, including automated migration checks for safe, repeatable deployments.</li>
+            </ul>
+            <ul class="tag-list small">
+              <li>FastAPI</li><li>Flask</li><li>PostgreSQL</li><li>Next.js</li><li>TypeScript</li><li>Alembic</li><li>GitHub Actions</li>
+            </ul>
           </article>
-          <article>
-            <h3>Frameworks & Technologies</h3>
-            <p>FastAPI, Flask, MERN Stack, Next.js, AWS, HTML, CSS, Tailwind CSS</p>
-          </article>
-          <article>
-            <h3>Databases</h3>
-            <p>PostgreSQL, MySQL, MongoDB</p>
-          </article>
-          <article>
-            <h3>AI & Cloud</h3>
-            <p>RAG, Prompt Engineering, Generative AI/LLM Concepts, AWS Cloud Practitioner (course)</p>
-          </article>
-          <article>
-            <h3>Developer Tools</h3>
-            <p>Git, VS Code, Postman, Warp Terminal, Claude Code, OpenAI Codex, OpenCode</p>
-          </article>
-          <article>
-            <h3>Systems & DevOps</h3>
-            <p>Linux (Ubuntu), Bash, Git workflows, CI/CD monitoring, deployment debugging</p>
+
+          <article class="card timeline-item">
+            <div class="card-head">
+              <div>
+                <h3>Software Engineering Intern, Full Stack Developer</h3>
+                <p class="company">Xaventra · BizAdvisor &amp; Neurux Platforms</p>
+              </div>
+              <p class="date">Feb 2025 - Aug 2025</p>
+            </div>
+            <p class="sub-head">BizAdvisor - compliance platform for corporate secretarial firms</p>
+            <ul class="bullets">
+              <li>Developed backend services with Flask and SQLAlchemy, integrated with React / TypeScript frontends for multi-party task coordination workflows.</li>
+              <li>Fixed intricate ORM relationship and data-binding defects, correcting coordinator attribution and inaccurate UI rendering.</li>
+              <li>Refactored legacy components and resolved production issues in an agile team.</li>
+            </ul>
+            <p class="sub-head">Neurux - domain-focused AI assistant for business &amp; compliance</p>
+            <ul class="bullets">
+              <li>Adapted an AnythingLLM fork into a domain-specific chatbot for finance and compliance users.</li>
+              <li>Implemented RAG pipelines with embeddings and structured document retrieval, improving contextual relevance and precision.</li>
+              <li>Iterated on prompt structures to reduce off-domain answers, and prototyped agentic workflows for multi-step tasks.</li>
+            </ul>
+            <ul class="tag-list small">
+              <li>Flask</li><li>SQLAlchemy</li><li>React</li><li>RAG</li><li>Embeddings</li><li>Prompt Engineering</li>
+            </ul>
           </article>
         </div>
       </section>
 
-      <section class="section">
-        <h2>Professional Experience</h2>
+      <section class="section" id="projects">
+        <h2 class="section-title">Selected Projects</h2>
+        <div class="project-grid">
+          <article class="card project">
+            <h3>Actify</h3>
+            <p class="project-kicker">AI-powered meeting action tracker</p>
+            <p>Turns unstructured meeting notes into structured, assignable action items using the Gemini API, with JWT auth, per-user task ownership, filtering and export.</p>
+            <ul class="tag-list small">
+              <li>React 19</li><li>TypeScript</li><li>Express</li><li>SQLite</li><li>Gemini</li>
+            </ul>
+            <a class="project-link" href="https://github.com/ShalomHunukumbura/actify" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+          </article>
 
-        <article class="card">
-          <div class="card-head">
-            <h3>Associate Software Engineer - Full Stack Developer</h3>
-            <p>Aug 2025 - Present</p>
-          </div>
-          <p class="company">Xaventra | BizAdvisor Platform (Administrator Dashboard)</p>
-          <ul>
-            <li>Contributed to a production-grade business management platform for taxation, accounting, and compliance workflows.</li>
-            <li>Designed and integrated RESTful APIs using FastAPI + PostgreSQL with a Next.js + TypeScript frontend.</li>
-            <li>Delivered end-to-end features from backend logic and database design to frontend implementation and release.</li>
-            <li>Resolved production incidents using log analysis, database inspection, and API tracing.</li>
-          </ul>
-        </article>
+          <article class="card project">
+            <h3>Customer Churn Prediction</h3>
+            <p class="project-kicker">End-to-end ML pipeline + inference API</p>
+            <p>Predicts SaaS churn with feature engineering, model comparison and threshold tuning, served through a FastAPI service with single and batch prediction endpoints.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>Scikit-learn</li><li>FastAPI</li>
+            </ul>
+            <a class="project-link" href="https://github.com/ShalomHunukumbura/customer-churn-prediction" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+          </article>
 
-        <article class="card">
-          <div class="card-head">
-            <h3>Software Engineering Intern - Full Stack Developer</h3>
-            <p>Feb 2025 - Aug 2025</p>
-          </div>
-          <p class="company">Xaventra | BizAdvisor Platform</p>
-          <ul>
-            <li>Collaborated on a full-stack compliance platform for corporate secretarial firms.</li>
-            <li>Developed backend logic with Flask + SQLAlchemy and integrated React/TypeScript frontends.</li>
-            <li>Refactored legacy components and resolved production issues to improve reliability.</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <div class="card-head">
-            <h3>Software Engineering Intern - AI/Full Stack Developer</h3>
-            <p>Feb 2025 - Aug 2025</p>
-          </div>
-          <p class="company">Xaventra | Neurux Platform</p>
-          <ul>
-            <li>Contributed to a domain-focused AI chatbot forked from AnythingLLM for business and compliance use cases.</li>
-            <li>Implemented RAG workflows and prompt engineering to improve contextual relevance and precision.</li>
-            <li>Worked with LLM pipelines, embeddings, and structured document retrieval.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="section">
-        <h2>Projects</h2>
-        <div class="card-grid">
-          <article class="card compact">
+          <article class="card project">
             <h3>Engineering Signal Aggregator</h3>
-            <p>Python, FastAPI, SQLAlchemy, Alembic, PostgreSQL</p>
-            <p>Built a modular backend for scalable data aggregation with health checks, migrations, and environment-based configuration.</p>
+            <p class="project-kicker">Modular data aggregation backend</p>
+            <p>A layered backend for aggregating engineering signals with health checks, database migrations and environment-based configuration.</p>
+            <ul class="tag-list small">
+              <li>FastAPI</li><li>SQLAlchemy</li><li>Alembic</li><li>PostgreSQL</li>
+            </ul>
+            <a class="project-link" href="https://github.com/ShalomHunukumbura/engineering-signal-aggregator" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
           </article>
-          <article class="card compact">
+
+          <article class="card project">
             <h3>File Organizer CLI</h3>
-            <p>Python, argparse, pathlib</p>
-            <p>Developed an installable CLI tool for rule-based file organization with safe execution controls and collision handling.</p>
-          </article>
-          <article class="card compact">
-            <h3>Actify - AI Meeting Action Tracker</h3>
-            <p>React, TypeScript, Node.js, Express, SQLite, JWT, Gemini API</p>
-            <p>Built an AI-powered app that converts meeting notes into structured action items with task tracking and export features.</p>
+            <p class="project-kicker">Installable Python command-line tool</p>
+            <p>Rule-based file organization with dry-run safety and collision handling, packaged with pyproject.toml and a console entry point for one-command install.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>argparse</li><li>pathlib</li>
+            </ul>
+            <a class="project-link" href="https://github.com/ShalomHunukumbura/file-organizer" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
           </article>
         </div>
       </section>
 
-      <section class="section">
-        <h2>Education</h2>
-        <article class="card compact">
-          <h3>Sri Lanka Technological Campus</h3>
-          <p>Bachelor of Science in Information Technology (Cloud Computing)</p>
-        </article>
+      <section class="section" id="skills">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Languages</h3>
+            <ul class="tag-list"><li>Python</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>HTML</li><li>CSS</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Backend</h3>
+            <ul class="tag-list"><li>FastAPI</li><li>Flask</li><li>SQLAlchemy</li><li>Node.js</li><li>Express</li><li>REST API design</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Frontend</h3>
+            <ul class="tag-list"><li>React</li><li>Next.js</li><li>TypeScript</li><li>Tailwind CSS</li><li>Responsive UI</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Databases</h3>
+            <ul class="tag-list"><li>PostgreSQL</li><li>MySQL</li><li>MongoDB</li><li>SQLite</li><li>Schema design &amp; migrations</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>AI &amp; ML</h3>
+            <ul class="tag-list"><li>RAG</li><li>LLM integration</li><li>Prompt engineering</li><li>Embeddings &amp; vector retrieval</li><li>Agentic workflows</li><li>Scikit-learn</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Cloud, DevOps &amp; Tools</h3>
+            <ul class="tag-list"><li>AWS (S3)</li><li>Linux</li><li>CI/CD</li><li>GitHub Actions</li><li>Git</li><li>Postman</li><li>JWT auth</li><li>AI-assisted dev tooling</li></ul>
+          </div>
+        </div>
       </section>
 
-      <section class="section">
-        <h2>Learning Log</h2>
-        <article class="card compact">
-          <p>
-            I keep a monthly log of what I read and what I learned.
-            <a href="learning-log.html">Open Learning Log</a>
-          </p>
-        </article>
+      <section class="section two-up">
+        <div>
+          <h2 class="section-title">Education</h2>
+          <article class="card">
+            <h3>BSc (Hons) in Information Technology</h3>
+            <p class="company">Cloud Computing · Sri Lanka Technological Campus · 2025</p>
+          </article>
+          <article class="card">
+            <h3>AWS Cloud Practitioner Training</h3>
+            <p class="company">Completed</p>
+          </article>
+        </div>
+        <div>
+          <h2 class="section-title">Learning Log</h2>
+          <article class="card callout">
+            <p>
+              I keep a monthly record of the books and articles I read, what I learned,
+              and how I applied it at work and in side projects.
+            </p>
+            <a class="btn btn-primary" href="learning-log.html">Open the Learning Log</a>
+          </article>
+        </div>
       </section>
 
-      <section class="section">
-        <h2>Links</h2>
-        <ul class="link-list">
-          <li><a href="http://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-          <li><a href="https://portfolio-shalom-dev-wcz9.vercel.app/" target="_blank" rel="noopener noreferrer">Previous Portfolio</a></li>
+      <section class="section contact card" id="contact">
+        <div>
+          <h2>Let's build something.</h2>
+          <p>Open to full stack and AI engineering conversations.</p>
+        </div>
+        <ul class="contact-list">
+          <li><a href="mailto:benjaminshalom1999@gmail.com">benjaminshalom1999@gmail.com</a></li>
+          <li><a href="tel:+94761645296">+94 76 164 5296</a></li>
+          <li><a href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">linkedin.com/in/shunukumbura</a></li>
+          <li><a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">github.com/ShalomHunukumbura</a></li>
         </ul>
       </section>
+
+      <footer class="footer">
+        <p>© 2026 Shalom Hunukumbura</p>
+      </footer>
     </main>
   </body>
 </html>
