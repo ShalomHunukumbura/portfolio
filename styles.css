@@ -814,3 +814,10 @@ h3 {
     transition: none;
   }
 }
+
+.more-projects {
+  margin-top: 1.25rem;
+  color: var(--muted, #6b7280);
+  font-size: 0.95rem;
+}
+.more-projects a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }

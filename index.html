@@ -37,7 +37,8 @@
         <p class="lead">
           I build production-grade business, taxation and compliance platforms end to end:
           REST APIs, relational data models, frontends and releases. I also build AI-powered
-          applications with RAG and LLM integration for finance and compliance use cases.
+          applications with RAG and LLM integration for finance and compliance use cases, and ship
+          open-source tools in public: four packages on PyPI, an MCP server and a live job search product.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="mailto:benjaminshalom1999@gmail.com">Get in touch</a>
@@ -117,6 +118,55 @@
         <h2 class="section-title">Selected Projects</h2>
         <div class="project-grid">
           <article class="card project">
+            <h3>Unlisted</h3>
+            <p class="project-kicker">Live job search · 7,700+ company career pages</p>
+            <p>Jobs that never make it to job boards. Every role on 7,700+ Greenhouse, Ashby and Lever career pages, synced daily by GitHub Actions and kept to the past two weeks (about 40,000 of 227,000). Checks where a &ldquo;remote&rdquo; role can really be done from, with a filter for Sri Lanka. Fits a free 1 GB Postgres with phrase search under 40 ms.</p>
+            <ul class="tag-list small">
+              <li>Next.js 16</li><li>TypeScript</li><li>Python</li><li>PostgreSQL</li><li>GitHub Actions</li><li>Vercel</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://unlisted-tau.vercel.app" target="_blank" rel="noopener noreferrer">Live site →</a>
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/unlisted" target="_blank" rel="noopener noreferrer">GitHub →</a>
+            </div>
+          </article>
+          <article class="card project">
+            <h3>lk-tax</h3>
+            <p class="project-kicker">Sri Lankan tax engine · published on PyPI</p>
+            <p>APIT, income tax, withholding tax, VAT and SSCL, with rules stored as dated data that cites its Inland Revenue source, so any date since 2023 uses the rules in force then. Verified against all 75,590 rows of the official salary tax tables, and runs fully in the browser as a live calculator.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>Decimal</li><li>FastAPI</li><li>Pyodide</li><li>PyPI</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://shalomhunukumbura.github.io/lk-tax/" target="_blank" rel="noopener noreferrer">Live calculator →</a>
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/lk-tax" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="project-link" href="https://pypi.org/project/lk-tax/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+            </div>
+          </article>
+          <article class="card project">
+            <h3>lk-tax-mcp</h3>
+            <p class="project-kicker">AI tool server · official MCP Registry</p>
+            <p>An MCP server that gives AI assistants like Claude 9 exact, sourced Sri Lankan tax tools instead of recalled rates. Designed for an AI as the user: described parameters, enumerated choices, and errors the model can act on.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>MCP</li><li>LLM tools</li><li>PyPI</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/lk-tax-mcp" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="project-link" href="https://pypi.org/project/lk-tax-mcp/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+            </div>
+          </article>
+          <article class="card project">
+            <h3>payhere-sim</h3>
+            <p class="project-kicker">PayHere payments testing · published on PyPI</p>
+            <p>Sends correctly signed PayHere payment notifications to localhost and checks a webhook handler against 10 scenarios: forged, underpaid, duplicate, late and simultaneous. Caught a race that granted 500 credits for one payment in a handler that passed manual testing.</p>
+            <ul class="tag-list small">
+              <li>Python</li><li>Webhooks</li><li>Concurrency</li><li>PyPI</li>
+            </ul>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/ShalomHunukumbura/payhere-sim" target="_blank" rel="noopener noreferrer">GitHub →</a>
+              <a class="project-link" href="https://pypi.org/project/payhere-sim/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+            </div>
+          </article>
+          <article class="card project">
             <h3>alembic-guard</h3>
             <p class="project-kicker">Migration linter for PostgreSQL · published on PyPI</p>
             <p>Catches Alembic migrations that lock Postgres tables or break running code before they reach production. Parses migrations with Python's <code>ast</code> (never executes them), ships 10 rules with suggested fixes, and runs as a CLI or a GitHub Action that annotates pull requests.</p>
@@ -126,6 +176,7 @@
             <div class="project-links">
               <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub →</a>
               <a class="project-link" href="https://pypi.org/project/alembic-guard/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+              <a class="project-link" href="https://github.com/marketplace/actions/alembic-guard" target="_blank" rel="noopener noreferrer">Marketplace →</a>
               <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard-demo/pulls" target="_blank" rel="noopener noreferrer">Live demo PR →</a>
             </div>
           </article>
@@ -142,46 +193,12 @@
             </div>
           </article>
 
-          <article class="card project">
-            <h3>Actify</h3>
-            <p class="project-kicker">AI-powered meeting action tracker</p>
-            <p>Turns unstructured meeting notes into structured, assignable action items using the Gemini API, with JWT auth, per-user task ownership, filtering and export.</p>
-            <ul class="tag-list small">
-              <li>React 19</li><li>TypeScript</li><li>Express</li><li>SQLite</li><li>Gemini</li>
-            </ul>
-            <a class="project-link" href="https://github.com/ShalomHunukumbura/actify" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-          </article>
-
-          <article class="card project">
-            <h3>Customer Churn Prediction</h3>
-            <p class="project-kicker">End-to-end ML pipeline + inference API</p>
-            <p>Predicts SaaS churn with feature engineering, model comparison and threshold tuning, served through a FastAPI service with single and batch prediction endpoints.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>Scikit-learn</li><li>FastAPI</li>
-            </ul>
-            <a class="project-link" href="https://github.com/ShalomHunukumbura/customer-churn-prediction" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-          </article>
-
-          <article class="card project">
-            <h3>Engineering Signal Aggregator</h3>
-            <p class="project-kicker">Modular data aggregation backend</p>
-            <p>A layered backend for aggregating engineering signals with health checks, database migrations and environment-based configuration.</p>
-            <ul class="tag-list small">
-              <li>FastAPI</li><li>SQLAlchemy</li><li>Alembic</li><li>PostgreSQL</li>
-            </ul>
-            <a class="project-link" href="https://github.com/ShalomHunukumbura/engineering-signal-aggregator" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-          </article>
-
-          <article class="card project">
-            <h3>File Organizer CLI</h3>
-            <p class="project-kicker">Installable Python command-line tool</p>
-            <p>Rule-based file organization with dry-run safety and collision handling, packaged with pyproject.toml and a console entry point for one-command install.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>argparse</li><li>pathlib</li>
-            </ul>
-            <a class="project-link" href="https://github.com/ShalomHunukumbura/file-organizer" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-          </article>
         </div>
+        <p class="more-projects">
+          Earlier: <a href="https://github.com/ShalomHunukumbura/actify" target="_blank" rel="noopener noreferrer">Actify</a> (meeting notes to action items with Gemini),
+          <a href="https://github.com/ShalomHunukumbura/customer-churn-prediction" target="_blank" rel="noopener noreferrer">Customer Churn Prediction</a> (ML pipeline + FastAPI) and
+          <a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">more on GitHub</a>.
+        </p>
       </section>
 
       <section class="section" id="skills">
@@ -205,11 +222,11 @@
           </div>
           <div class="skill-group">
             <h3>AI &amp; ML</h3>
-            <ul class="tag-list"><li>RAG</li><li>LLM integration</li><li>Prompt engineering</li><li>Embeddings &amp; vector retrieval</li><li>Agentic workflows</li><li>Scikit-learn</li></ul>
+            <ul class="tag-list"><li>RAG</li><li>LLM integration</li><li>Prompt engineering</li><li>Embeddings &amp; vector retrieval</li><li>MCP servers</li><li>Agentic workflows</li><li>Scikit-learn</li></ul>
           </div>
           <div class="skill-group">
             <h3>Cloud, DevOps &amp; Tools</h3>
-            <ul class="tag-list"><li>AWS (S3)</li><li>Linux</li><li>CI/CD</li><li>GitHub Actions</li><li>Git</li><li>Postman</li><li>JWT auth</li><li>AI-assisted dev tooling</li></ul>
+            <ul class="tag-list"><li>AWS (S3)</li><li>Linux</li><li>CI/CD</li><li>GitHub Actions</li><li>Vercel</li><li>Docker</li><li>PyPI packaging</li><li>Git</li><li>Postman</li><li>JWT auth</li><li>AI-assisted dev tooling</li></ul>
           </div>
         </div>
       </section>
