@@ -8,269 +8,348 @@
       name="description"
       content="Portfolio of Shalom Hunukumbura, Full Stack Developer building production platforms and AI-powered applications with Python, FastAPI, Next.js and TypeScript."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Shalom Hunukumbura | Full Stack Developer" />
+    <meta
+      property="og:description"
+      content="Production business and compliance platforms, AI applications, and open-source tools on PyPI."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141210" media="(prefers-color-scheme: dark)" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141210'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='36' fill='%23e08a5e'%3Esh%3C/text%3E%3C/svg%3E"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script>document.documentElement.classList.add("js");</script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
     <header class="topbar">
       <div class="container topbar-inner">
-        <a class="brand" href="index.html">SH<span>.</span></a>
+        <a class="brand" href="index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark">sh</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
         <nav class="site-nav" aria-label="Primary">
+          <a href="#work">Work</a>
           <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
           <a href="#skills">Skills</a>
-          <a href="learning-log.html">Learning Log</a>
+          <a href="learning-log.html">Learning log</a>
+          <a class="nav-cta" href="#contact">Contact</a>
         </nav>
       </div>
     </header>
 
-    <main class="container">
-      <section class="hero">
-        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>Malabe, Sri Lanka</p>
-        <h1>Shalom Hunukumbura</h1>
-        <p class="role">Full Stack Developer</p>
-        <p class="lead">
-          I build production-grade business, taxation and compliance platforms end to end:
-          REST APIs, relational data models, frontends and releases. I also build AI-powered
-          applications with RAG and LLM integration for finance and compliance use cases, and ship
-          open-source tools in public: four packages on PyPI, an MCP server and a live job search product.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="mailto:benjaminshalom1999@gmail.com">Get in touch</a>
-          <a class="btn" href="shalom_hunukumbura_resume.pdf" target="_blank" rel="noopener">Download CV</a>
-          <a class="btn btn-ghost" href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a class="btn btn-ghost" href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <main id="main" class="container">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-main reveal">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>Available for conversations · Malabe, Sri Lanka</p>
+          <h1 id="hero-title">
+            Shalom Hunukumbura<br />
+            <em>builds the boring parts</em> that have to be right.
+          </h1>
+          <p class="lead">
+            Full stack developer shipping taxation, accounting and compliance platforms end to end:
+            schemas, REST APIs, frontends and releases. Outside work I build AI tools for finance
+            and publish open-source packages, four of them on PyPI.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="mailto:benjaminshalom1999@gmail.com">
+              Get in touch <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn" href="shalom_hunukumbura_resume.pdf" target="_blank" rel="noopener">Download CV</a>
+            <a class="text-link" href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            <a class="text-link" href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          </div>
         </div>
-        <ul class="tag-list hero-stack" aria-label="Core stack">
-          <li>Python</li>
-          <li>FastAPI</li>
-          <li>Next.js</li>
-          <li>TypeScript</li>
-          <li>PostgreSQL</li>
-          <li>AI / LLM</li>
-        </ul>
+
+        <aside class="hero-aside reveal" aria-label="At a glance">
+          <dl class="glance">
+            <div><dt>Now</dt><dd>Software Engineer at Xaventra, BizAdvisor platform</dd></div>
+            <div><dt>Stack</dt><dd>Python, FastAPI, PostgreSQL, Next.js, TypeScript</dd></div>
+            <div><dt>Lately</dt><dd>RAG, MCP servers, migration safety</dd></div>
+            <div><dt>Shipped</dt><dd>4 PyPI packages, 1 MCP server, 1 live job search</dd></div>
+          </dl>
+        </aside>
       </section>
 
-      <section class="stats" aria-label="Highlights">
+      <section class="stats reveal" aria-label="Highlights">
         <div class="stat"><strong>15</strong><span>production services contributed to</span></div>
-        <div class="stat"><strong>140+</strong><span>REST endpoints designed &amp; integrated</span></div>
+        <div class="stat"><strong>140+</strong><span>REST endpoints designed and integrated</span></div>
         <div class="stat"><strong>240+</strong><span>merged pull requests</span></div>
         <div class="stat"><strong>46</strong><span>Alembic migrations authored</span></div>
       </section>
 
-      <section class="section" id="experience">
-        <h2 class="section-title">Experience</h2>
+      <section class="section" id="work" aria-labelledby="work-title">
+        <header class="section-head reveal">
+          <p class="section-index">01</p>
+          <h2 id="work-title" class="section-heading">Selected work</h2>
+          <p class="section-note">Things I built on my own time, each solving a problem I ran into at work or in Sri Lanka.</p>
+        </header>
 
-        <div class="timeline">
-          <article class="card timeline-item">
-            <div class="card-head">
-              <div>
-                <h3>Software Engineer, Full Stack Developer</h3>
-                <p class="company">Xaventra · BizAdvisor Platform</p>
+        <ol class="work-list">
+          <li class="work featured reveal">
+            <span class="work-num" aria-hidden="true">01</span>
+            <div class="work-title">
+              <h3>Unlisted</h3>
+              <p class="work-kicker">Live job search across 7,700+ career pages</p>
+            </div>
+            <div class="work-body">
+              <p>Every role on 7,700+ Greenhouse, Ashby and Lever career pages, straight from the source: synced hourly by GitHub Actions, kept to the past two weeks (about 40,000 of 227,000), and checked live with the employer before you apply. Checks where a &ldquo;remote&rdquo; role can really be done from, with a filter for Sri Lanka. Fits a free 1 GB Postgres with phrase search under 40 ms.</p>
+              <ul class="tag-list"><li>Next.js 16</li><li>TypeScript</li><li>Python</li><li>PostgreSQL</li><li>GitHub Actions</li><li>Vercel</li></ul>
+              <div class="work-links">
+                <a href="https://unlisted-tau.vercel.app" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                <a href="https://github.com/ShalomHunukumbura/unlisted" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
               </div>
-              <p class="date">Aug 2025 - Present</p>
             </div>
-            <ul class="bullets">
-              <li>Build and ship features across a 15-service production platform covering taxation, accounting, incorporation and compliance, authoring 170+ merged PRs on a 6-engineer team.</li>
-              <li>Design and integrate REST APIs across FastAPI and Flask services on PostgreSQL, contributing to 140+ endpoints consumed by Next.js / TypeScript frontends.</li>
-              <li>Own features end to end across 12 services, including invoicing, payments, promotions and incorporation workflows, from schema and business logic to UI and release.</li>
-              <li>Diagnose production incidents through log analysis, database inspection and API tracing, restoring service with minimal downtime and documenting root causes.</li>
-              <li>Author 46 Alembic migrations and maintain 8 GitHub Actions CI/CD workflows, including automated migration checks for safe, repeatable deployments.</li>
-            </ul>
-            <ul class="tag-list small">
-              <li>FastAPI</li><li>Flask</li><li>PostgreSQL</li><li>Next.js</li><li>TypeScript</li><li>Alembic</li><li>GitHub Actions</li>
-            </ul>
-          </article>
+          </li>
 
-          <article class="card timeline-item">
-            <div class="card-head">
-              <div>
-                <h3>Software Engineering Intern, Full Stack Developer</h3>
-                <p class="company">Xaventra · BizAdvisor &amp; Neurux Platforms</p>
+          <li class="work reveal">
+            <span class="work-num" aria-hidden="true">02</span>
+            <div class="work-title">
+              <h3>lk-tax</h3>
+              <p class="work-kicker">Sri Lankan tax engine, on PyPI</p>
+            </div>
+            <div class="work-body">
+              <p>APIT, income tax, withholding tax, VAT and SSCL, with rules stored as dated data that cites its Inland Revenue source, so any date since 2023 uses the rules in force then. Verified against all 75,590 rows of the official salary tax tables, and runs fully in the browser as a live calculator.</p>
+              <ul class="tag-list"><li>Python</li><li>Decimal</li><li>FastAPI</li><li>Pyodide</li><li>PyPI</li></ul>
+              <div class="work-links">
+                <a href="https://shalomhunukumbura.github.io/lk-tax/" target="_blank" rel="noopener noreferrer">Live calculator ↗</a>
+                <a href="https://github.com/ShalomHunukumbura/lk-tax" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                <a href="https://pypi.org/project/lk-tax/" target="_blank" rel="noopener noreferrer">PyPI ↗</a>
               </div>
-              <p class="date">Feb 2025 - Aug 2025</p>
             </div>
-            <p class="sub-head">BizAdvisor - compliance platform for corporate secretarial firms</p>
-            <ul class="bullets">
-              <li>Developed backend services with Flask and SQLAlchemy, integrated with React / TypeScript frontends for multi-party task coordination workflows.</li>
-              <li>Fixed intricate ORM relationship and data-binding defects, correcting coordinator attribution and inaccurate UI rendering.</li>
-              <li>Refactored legacy components and resolved production issues in an agile team.</li>
-            </ul>
-            <p class="sub-head">Neurux - domain-focused AI assistant for business &amp; compliance</p>
-            <ul class="bullets">
-              <li>Adapted an AnythingLLM fork into a domain-specific chatbot for finance and compliance users.</li>
-              <li>Implemented RAG pipelines with embeddings and structured document retrieval, improving contextual relevance and precision.</li>
-              <li>Iterated on prompt structures to reduce off-domain answers, and prototyped agentic workflows for multi-step tasks.</li>
-            </ul>
-            <ul class="tag-list small">
-              <li>Flask</li><li>SQLAlchemy</li><li>React</li><li>RAG</li><li>Embeddings</li><li>Prompt Engineering</li>
-            </ul>
-          </article>
-        </div>
-      </section>
+          </li>
 
-      <section class="section" id="projects">
-        <h2 class="section-title">Selected Projects</h2>
-        <div class="project-grid">
-          <article class="card project">
-            <h3>Unlisted</h3>
-            <p class="project-kicker">Live job search · 7,700+ company career pages</p>
-            <p>Every role on 7,700+ Greenhouse, Ashby and Lever career pages, straight from the source: synced hourly by GitHub Actions, kept to the past two weeks (about 40,000 of 227,000), and checked live with the employer before you apply. Checks where a &ldquo;remote&rdquo; role can really be done from, with a filter for Sri Lanka. Fits a free 1 GB Postgres with phrase search under 40 ms.</p>
-            <ul class="tag-list small">
-              <li>Next.js 16</li><li>TypeScript</li><li>Python</li><li>PostgreSQL</li><li>GitHub Actions</li><li>Vercel</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://unlisted-tau.vercel.app" target="_blank" rel="noopener noreferrer">Live site →</a>
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/unlisted" target="_blank" rel="noopener noreferrer">GitHub →</a>
+          <li class="work reveal">
+            <span class="work-num" aria-hidden="true">03</span>
+            <div class="work-title">
+              <h3>lk-tax-mcp</h3>
+              <p class="work-kicker">AI tool server, in the official MCP Registry</p>
             </div>
-          </article>
-          <article class="card project">
-            <h3>lk-tax</h3>
-            <p class="project-kicker">Sri Lankan tax engine · published on PyPI</p>
-            <p>APIT, income tax, withholding tax, VAT and SSCL, with rules stored as dated data that cites its Inland Revenue source, so any date since 2023 uses the rules in force then. Verified against all 75,590 rows of the official salary tax tables, and runs fully in the browser as a live calculator.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>Decimal</li><li>FastAPI</li><li>Pyodide</li><li>PyPI</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://shalomhunukumbura.github.io/lk-tax/" target="_blank" rel="noopener noreferrer">Live calculator →</a>
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/lk-tax" target="_blank" rel="noopener noreferrer">GitHub →</a>
-              <a class="project-link" href="https://pypi.org/project/lk-tax/" target="_blank" rel="noopener noreferrer">PyPI →</a>
+            <div class="work-body">
+              <p>An MCP server that gives AI assistants like Claude 9 exact, sourced Sri Lankan tax tools instead of recalled rates. Designed for an AI as the user: described parameters, enumerated choices, and errors the model can act on.</p>
+              <ul class="tag-list"><li>Python</li><li>MCP</li><li>LLM tools</li><li>PyPI</li></ul>
+              <div class="work-links">
+                <a href="https://github.com/ShalomHunukumbura/lk-tax-mcp" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                <a href="https://pypi.org/project/lk-tax-mcp/" target="_blank" rel="noopener noreferrer">PyPI ↗</a>
+              </div>
             </div>
-          </article>
-          <article class="card project">
-            <h3>lk-tax-mcp</h3>
-            <p class="project-kicker">AI tool server · official MCP Registry</p>
-            <p>An MCP server that gives AI assistants like Claude 9 exact, sourced Sri Lankan tax tools instead of recalled rates. Designed for an AI as the user: described parameters, enumerated choices, and errors the model can act on.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>MCP</li><li>LLM tools</li><li>PyPI</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/lk-tax-mcp" target="_blank" rel="noopener noreferrer">GitHub →</a>
-              <a class="project-link" href="https://pypi.org/project/lk-tax-mcp/" target="_blank" rel="noopener noreferrer">PyPI →</a>
-            </div>
-          </article>
-          <article class="card project">
-            <h3>payhere-sim</h3>
-            <p class="project-kicker">PayHere payments testing · published on PyPI</p>
-            <p>Sends correctly signed PayHere payment notifications to localhost and checks a webhook handler against 10 scenarios: forged, underpaid, duplicate, late and simultaneous. Caught a race that granted 500 credits for one payment in a handler that passed manual testing.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>Webhooks</li><li>Concurrency</li><li>PyPI</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/payhere-sim" target="_blank" rel="noopener noreferrer">GitHub →</a>
-              <a class="project-link" href="https://pypi.org/project/payhere-sim/" target="_blank" rel="noopener noreferrer">PyPI →</a>
-            </div>
-          </article>
-          <article class="card project">
-            <h3>alembic-guard</h3>
-            <p class="project-kicker">Migration linter for PostgreSQL · published on PyPI</p>
-            <p>Catches Alembic migrations that lock Postgres tables or break running code before they reach production. Parses migrations with Python's <code>ast</code> (never executes them), ships 10 rules with suggested fixes, and runs as a CLI or a GitHub Action that annotates pull requests.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>Alembic</li><li>PostgreSQL</li><li>AST</li><li>GitHub Actions</li><li>PyPI</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub →</a>
-              <a class="project-link" href="https://pypi.org/project/alembic-guard/" target="_blank" rel="noopener noreferrer">PyPI →</a>
-              <a class="project-link" href="https://github.com/marketplace/actions/alembic-guard" target="_blank" rel="noopener noreferrer">Marketplace →</a>
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/alembic-guard-demo/pulls" target="_blank" rel="noopener noreferrer">Live demo PR →</a>
-            </div>
-          </article>
+          </li>
 
-          <article class="card project">
-            <h3>DocSage</h3>
-            <p class="project-kicker">RAG from first principles, no LangChain</p>
-            <p>Question answering over 37 engineering documents with cited answers. Hybrid retrieval (FAISS embeddings + BM25, merged with reciprocal rank fusion) puts the right document first for 93% of questions vs 86% for either alone, measured on a 54-question eval set. Refuses off-topic questions instead of guessing.</p>
-            <ul class="tag-list small">
-              <li>Python</li><li>FAISS</li><li>BM25</li><li>FastAPI</li><li>LLM</li><li>Docker</li>
-            </ul>
-            <div class="project-links">
-              <a class="project-link" href="https://github.com/ShalomHunukumbura/docsage" target="_blank" rel="noopener noreferrer">GitHub →</a>
+          <li class="work reveal">
+            <span class="work-num" aria-hidden="true">04</span>
+            <div class="work-title">
+              <h3>payhere-sim</h3>
+              <p class="work-kicker">PayHere payments testing, on PyPI</p>
             </div>
-          </article>
+            <div class="work-body">
+              <p>Sends correctly signed PayHere payment notifications to localhost and checks a webhook handler against 10 scenarios: forged, underpaid, duplicate, late and simultaneous. Caught a race that granted 500 credits for one payment in a handler that passed manual testing.</p>
+              <ul class="tag-list"><li>Python</li><li>Webhooks</li><li>Concurrency</li><li>PyPI</li></ul>
+              <div class="work-links">
+                <a href="https://github.com/ShalomHunukumbura/payhere-sim" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                <a href="https://pypi.org/project/payhere-sim/" target="_blank" rel="noopener noreferrer">PyPI ↗</a>
+              </div>
+            </div>
+          </li>
 
-        </div>
-        <p class="more-projects">
+          <li class="work reveal">
+            <span class="work-num" aria-hidden="true">05</span>
+            <div class="work-title">
+              <h3>alembic-guard</h3>
+              <p class="work-kicker">Migration linter for PostgreSQL, on PyPI</p>
+            </div>
+            <div class="work-body">
+              <p>Catches Alembic migrations that lock Postgres tables or break running code before they reach production. Parses migrations with Python's <code>ast</code> (never executes them), ships 10 rules with suggested fixes, and runs as a CLI or a GitHub Action that annotates pull requests.</p>
+              <ul class="tag-list"><li>Python</li><li>Alembic</li><li>PostgreSQL</li><li>AST</li><li>GitHub Actions</li><li>PyPI</li></ul>
+              <div class="work-links">
+                <a href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                <a href="https://pypi.org/project/alembic-guard/" target="_blank" rel="noopener noreferrer">PyPI ↗</a>
+                <a href="https://github.com/marketplace/actions/alembic-guard" target="_blank" rel="noopener noreferrer">Marketplace ↗</a>
+                <a href="https://github.com/ShalomHunukumbura/alembic-guard-demo/pulls" target="_blank" rel="noopener noreferrer">Live demo PR ↗</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="work reveal">
+            <span class="work-num" aria-hidden="true">06</span>
+            <div class="work-title">
+              <h3>DocSage</h3>
+              <p class="work-kicker">RAG from first principles, no LangChain</p>
+            </div>
+            <div class="work-body">
+              <p>Question answering over 37 engineering documents with cited answers. Hybrid retrieval (FAISS embeddings + BM25, merged with reciprocal rank fusion) puts the right document first for 93% of questions vs 86% for either alone, measured on a 54-question eval set. Refuses off-topic questions instead of guessing.</p>
+              <ul class="tag-list"><li>Python</li><li>FAISS</li><li>BM25</li><li>FastAPI</li><li>LLM</li><li>Docker</li></ul>
+              <div class="work-links">
+                <a href="https://github.com/ShalomHunukumbura/docsage" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <p class="more-projects reveal">
           Earlier: <a href="https://github.com/ShalomHunukumbura/actify" target="_blank" rel="noopener noreferrer">Actify</a> (meeting notes to action items with Gemini),
           <a href="https://github.com/ShalomHunukumbura/customer-churn-prediction" target="_blank" rel="noopener noreferrer">Customer Churn Prediction</a> (ML pipeline + FastAPI) and
           <a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">more on GitHub</a>.
         </p>
       </section>
 
-      <section class="section" id="skills">
-        <h2 class="section-title">Skills</h2>
-        <div class="skills-grid">
-          <div class="skill-group">
-            <h3>Languages</h3>
-            <ul class="tag-list"><li>Python</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>HTML</li><li>CSS</li></ul>
-          </div>
-          <div class="skill-group">
-            <h3>Backend</h3>
-            <ul class="tag-list"><li>FastAPI</li><li>Flask</li><li>SQLAlchemy</li><li>Node.js</li><li>Express</li><li>REST API design</li></ul>
-          </div>
-          <div class="skill-group">
-            <h3>Frontend</h3>
-            <ul class="tag-list"><li>React</li><li>Next.js</li><li>TypeScript</li><li>Tailwind CSS</li><li>Responsive UI</li></ul>
-          </div>
-          <div class="skill-group">
-            <h3>Databases</h3>
-            <ul class="tag-list"><li>PostgreSQL</li><li>MySQL</li><li>MongoDB</li><li>SQLite</li><li>Schema design &amp; migrations</li></ul>
-          </div>
-          <div class="skill-group">
-            <h3>AI &amp; ML</h3>
-            <ul class="tag-list"><li>RAG</li><li>LLM integration</li><li>Prompt engineering</li><li>Embeddings &amp; vector retrieval</li><li>MCP servers</li><li>Agentic workflows</li><li>Scikit-learn</li></ul>
-          </div>
-          <div class="skill-group">
-            <h3>Cloud, DevOps &amp; Tools</h3>
-            <ul class="tag-list"><li>AWS (S3)</li><li>Linux</li><li>CI/CD</li><li>GitHub Actions</li><li>Vercel</li><li>Docker</li><li>PyPI packaging</li><li>Git</li><li>Postman</li><li>JWT auth</li><li>AI-assisted dev tooling</li></ul>
-          </div>
+      <section class="section" id="experience" aria-labelledby="experience-title">
+        <header class="section-head reveal">
+          <p class="section-index">02</p>
+          <h2 id="experience-title" class="section-heading">Experience</h2>
+          <p class="section-note">One company, two platforms, from intern to owning features across 12 services.</p>
+        </header>
+
+        <div class="timeline">
+          <article class="role-entry reveal">
+            <div class="role-meta">
+              <p class="date">Aug 2025 – Present</p>
+              <p class="company">Xaventra</p>
+            </div>
+            <div class="role-body">
+              <h3>Software Engineer, Full Stack Developer</h3>
+              <p class="role-context">BizAdvisor platform</p>
+              <ul class="bullets">
+                <li>Build and ship features across a 15-service production platform covering taxation, accounting, incorporation and compliance, authoring 170+ merged PRs on a 6-engineer team.</li>
+                <li>Design and integrate REST APIs across FastAPI and Flask services on PostgreSQL, contributing to 140+ endpoints consumed by Next.js / TypeScript frontends.</li>
+                <li>Own features end to end across 12 services, including invoicing, payments, promotions and incorporation workflows, from schema and business logic to UI and release.</li>
+                <li>Diagnose production incidents through log analysis, database inspection and API tracing, restoring service with minimal downtime and documenting root causes.</li>
+                <li>Author 46 Alembic migrations and maintain 8 GitHub Actions CI/CD workflows, including automated migration checks for safe, repeatable deployments.</li>
+              </ul>
+              <ul class="tag-list"><li>FastAPI</li><li>Flask</li><li>PostgreSQL</li><li>Next.js</li><li>TypeScript</li><li>Alembic</li><li>GitHub Actions</li></ul>
+            </div>
+          </article>
+
+          <article class="role-entry reveal">
+            <div class="role-meta">
+              <p class="date">Feb 2025 – Aug 2025</p>
+              <p class="company">Xaventra</p>
+            </div>
+            <div class="role-body">
+              <h3>Software Engineering Intern, Full Stack Developer</h3>
+              <p class="role-context">BizAdvisor and Neurux platforms</p>
+              <p class="sub-head">BizAdvisor, a compliance platform for corporate secretarial firms</p>
+              <ul class="bullets">
+                <li>Developed backend services with Flask and SQLAlchemy, integrated with React / TypeScript frontends for multi-party task coordination workflows.</li>
+                <li>Fixed intricate ORM relationship and data-binding defects, correcting coordinator attribution and inaccurate UI rendering.</li>
+                <li>Refactored legacy components and resolved production issues in an agile team.</li>
+              </ul>
+              <p class="sub-head">Neurux, a domain-focused AI assistant for business and compliance</p>
+              <ul class="bullets">
+                <li>Adapted an AnythingLLM fork into a domain-specific chatbot for finance and compliance users.</li>
+                <li>Implemented RAG pipelines with embeddings and structured document retrieval, improving contextual relevance and precision.</li>
+                <li>Iterated on prompt structures to reduce off-domain answers, and prototyped agentic workflows for multi-step tasks.</li>
+              </ul>
+              <ul class="tag-list"><li>Flask</li><li>SQLAlchemy</li><li>React</li><li>RAG</li><li>Embeddings</li><li>Prompt engineering</li></ul>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section class="section two-up">
-        <div>
-          <h2 class="section-title">Education</h2>
-          <article class="card">
-            <h3>BSc (Hons) in Information Technology</h3>
-            <p class="company">Cloud Computing · Sri Lanka Technological Campus · 2025</p>
-          </article>
-          <article class="card">
-            <h3>AWS Cloud Practitioner Training</h3>
-            <p class="company">Completed</p>
-          </article>
-        </div>
-        <div>
-          <h2 class="section-title">Learning Log</h2>
-          <article class="card callout">
-            <p>
-              I keep a monthly record of the books and articles I read, what I learned,
-              and how I applied it at work and in side projects.
-            </p>
-            <a class="btn btn-primary" href="learning-log.html">Open the Learning Log</a>
-          </article>
-        </div>
+      <section class="section" id="skills" aria-labelledby="skills-title">
+        <header class="section-head reveal">
+          <p class="section-index">03</p>
+          <h2 id="skills-title" class="section-heading">Skills</h2>
+          <p class="section-note">What I reach for, grouped by layer.</p>
+        </header>
+
+        <dl class="skills-table reveal">
+          <div class="skill-row"><dt>Languages</dt><dd>Python, TypeScript, JavaScript, SQL, HTML, CSS</dd></div>
+          <div class="skill-row"><dt>Backend</dt><dd>FastAPI, Flask, SQLAlchemy, Node.js, Express, REST API design</dd></div>
+          <div class="skill-row"><dt>Frontend</dt><dd>React, Next.js, TypeScript, Tailwind CSS, responsive UI</dd></div>
+          <div class="skill-row"><dt>Databases</dt><dd>PostgreSQL, MySQL, MongoDB, SQLite, schema design and migrations</dd></div>
+          <div class="skill-row"><dt>AI and ML</dt><dd>RAG, LLM integration, prompt engineering, embeddings and vector retrieval, MCP servers, agentic workflows, scikit-learn</dd></div>
+          <div class="skill-row"><dt>Cloud and tools</dt><dd>AWS (S3), Linux, CI/CD, GitHub Actions, Vercel, Docker, PyPI packaging, Git, Postman, JWT auth, AI-assisted dev tooling</dd></div>
+        </dl>
       </section>
 
-      <section class="section contact card" id="contact">
-        <div>
-          <h2>Let's build something.</h2>
-          <p>Open to full stack and AI engineering conversations.</p>
+      <section class="section split" aria-label="Education and learning log">
+        <div class="reveal">
+          <header class="section-head compact">
+            <p class="section-index">04</p>
+            <h2 class="section-heading">Education</h2>
+          </header>
+          <ul class="edu-list">
+            <li>
+              <h3>BSc (Hons) in Information Technology</h3>
+              <p>Cloud Computing · Sri Lanka Technological Campus · 2025</p>
+            </li>
+            <li>
+              <h3>AWS Cloud Practitioner training</h3>
+              <p>Completed</p>
+            </li>
+          </ul>
         </div>
+        <a class="log-callout reveal" href="learning-log.html">
+          <p class="section-index">05</p>
+          <h2 class="section-heading">Learning log</h2>
+          <p>
+            A monthly record of the books and articles I read, what I learned,
+            and how I applied it at work and in side projects.
+          </p>
+          <span class="text-link">Read the log <span class="btn-arrow" aria-hidden="true">→</span></span>
+        </a>
+      </section>
+
+      <section class="contact reveal" id="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">Have a platform that needs to be <em>right</em>? Let's talk.</h2>
+        <p class="contact-sub">Open to full stack and AI engineering conversations.</p>
+        <a class="contact-email" href="mailto:benjaminshalom1999@gmail.com">benjaminshalom1999@gmail.com</a>
         <ul class="contact-list">
-          <li><a href="mailto:benjaminshalom1999@gmail.com">benjaminshalom1999@gmail.com</a></li>
           <li><a href="tel:+94761645296">+94 76 164 5296</a></li>
-          <li><a href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">linkedin.com/in/shunukumbura</a></li>
-          <li><a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">github.com/ShalomHunukumbura</a></li>
+          <li><a href="https://linkedin.com/in/shunukumbura" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></li>
+          <li><a href="https://github.com/ShalomHunukumbura" target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
+          <li><a href="shalom_hunukumbura_resume.pdf" target="_blank" rel="noopener">CV (PDF) ↗</a></li>
         </ul>
       </section>
 
       <footer class="footer">
         <p>© 2026 Shalom Hunukumbura</p>
+        <a href="#main">Back to top ↑</a>
       </footer>
     </main>
+
+    <script>
+      (function () {
+        var items = document.querySelectorAll(".reveal");
+        if (!("IntersectionObserver" in window)) {
+          items.forEach(function (el) { el.classList.add("is-visible"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: "0px 0px -8% 0px" });
+        items.forEach(function (el) { io.observe(el); });
+
+        var links = document.querySelectorAll('.site-nav a[href^="#"]');
+        var sections = Array.prototype.map.call(links, function (a) {
+          return document.querySelector(a.getAttribute("href"));
+        });
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (a) {
+              a.classList.toggle("is-active", a.getAttribute("href") === "#" + entry.target.id);
+            });
+          });
+        }, { rootMargin: "-45% 0px -50% 0px" });
+        sections.forEach(function (s) { if (s) spy.observe(s); });
+      })();
+    </script>
   </body>
 </html>
