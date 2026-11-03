@@ -8,84 +8,91 @@
       name="description"
       content="Monthly record of books read, key learnings, and practical outputs by Shalom Hunukumbura."
     />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141210'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='36' fill='%23e08a5e'%3Esh%3C/text%3E%3C/svg%3E"
-    />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="home.css" />
+    <script src="boot.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+
     <header class="topbar">
-      <div class="container topbar-inner">
+      <div class="wrap topbar-inner">
         <a class="brand" href="index.html" aria-label="Shalom Hunukumbura, home">
-          <span class="brand-mark">sh</span>
+          <span class="brand-mark" aria-hidden="true">SH</span>
           <span class="brand-name">Shalom Hunukumbura</span>
         </a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="index.html">Home</a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="index.html#experience">Experience</a>
           <a href="index.html#projects">Projects</a>
-          <a href="learning-log.html" aria-current="page">Learning log</a>
+          <a href="index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="learning-log.html" aria-current="page">Learning Log</a>
         </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
       </div>
     </header>
 
-    <main id="main" class="container">
-      <section class="hero compact-hero">
-        <p class="eyebrow">Reading, monthly</p>
-        <h1>Learning <em>log</em></h1>
-        <p class="lead">
-          What I read each month, what I took away from it, and how I applied it at work
-          and in side projects.
+    <main id="main">
+      <section class="page-head wrap">
+        <h1>Learning Log</h1>
+        <p class="page-lead">
+          What I read each month, what I took away from it, and how I applied it at work and in side projects.
         </p>
-        <div class="stats log-stats" aria-label="Totals">
-          <div class="stat"><strong id="stat-months">0</strong><span>months logged</span></div>
-          <div class="stat"><strong id="stat-books">0</strong><span>books</span></div>
-          <div class="stat"><strong id="stat-articles">0</strong><span>articles</span></div>
-        </div>
+        <p class="log-totals" aria-live="polite">
+          <span id="stat-months">0</span> months, <span id="stat-books">0</span> books and
+          <span id="stat-articles">0</span> articles so far.
+        </p>
       </section>
 
-      <section class="section" id="admin-section" hidden>
-        <h2 class="section-title">Admin</h2>
-        <article class="card compact admin-card">
+      <section class="wrap" id="admin-section" hidden>
+        <div class="admin">
+          <h2 class="admin-heading">Admin</h2>
           <div class="admin-toolbar">
-            <button type="button" id="admin-login-btn">Admin Login</button>
-            <button type="button" id="admin-logout-btn" hidden>Logout</button>
+            <button type="button" class="btn btn-sm" id="admin-login-btn">Admin login</button>
+            <button type="button" class="btn btn-sm" id="admin-logout-btn" hidden>Log out</button>
           </div>
           <p id="admin-status">Viewer mode.</p>
           <div id="admin-panel" hidden>
             <p class="admin-note">
               Edit the JSON array and save. Changes are written to
-              <code>learning-log-store.json</code> - commit and push that file to publish them.
+              <code>learning-log-store.json</code>. Commit and push that file to publish them.
             </p>
+            <label class="admin-label" for="admin-json-editor">Entries (JSON)</label>
             <textarea id="admin-json-editor" spellcheck="false"></textarea>
             <div class="admin-toolbar">
-              <button type="button" id="admin-load-current-btn">Load Current</button>
-              <button type="button" id="admin-reset-default-btn">Reset to Default</button>
-              <button type="button" id="admin-save-btn">Save Changes</button>
+              <button type="button" class="btn btn-sm" id="admin-load-current-btn">Load current</button>
+              <button type="button" class="btn btn-sm" id="admin-reset-default-btn">Reset to default</button>
+              <button type="button" class="btn btn-primary btn-sm" id="admin-save-btn">Save changes</button>
             </div>
             <p id="admin-message" aria-live="polite"></p>
           </div>
-        </article>
+        </div>
       </section>
 
-      <section class="section">
-        <h2 class="section-title">Monthly entries</h2>
-        <div id="learning-log-list" class="card-grid" aria-live="polite"></div>
+      <section class="wrap log-section" aria-label="Monthly entries">
+        <div id="learning-log-list" class="log-list-wrap" aria-live="polite"></div>
       </section>
-
-      <footer class="footer">
-        <p>© 2026 Shalom Hunukumbura · <a href="index.html">Back to portfolio</a></p>
-      </footer>
     </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <a href="index.html">Back to portfolio</a>
+      </div>
+    </footer>
 
     <script src="learning-log-data.js"></script>
     <script src="learning-log.js"></script>
+    <script type="module" src="home.js"></script>
   </body>
 </html>

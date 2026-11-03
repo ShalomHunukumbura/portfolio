@@ -57,7 +57,7 @@
     }
 
     if (entries.length === 0) {
-      mount.innerHTML = '<article class="card compact"><p>No entries yet.</p></article>';
+      mount.innerHTML = '<p class="log-empty">No entries yet. The first month will appear here once it is added to learning-log-store.json.</p>';
       return;
     }
 
@@ -72,17 +72,17 @@
           articleCount + (articleCount === 1 ? " article" : " articles");
 
         return (
-          '<details class="card log-entry"' + openAttr + ">" +
+          '<details class="log-entry"' + openAttr + ">" +
           '<summary class="log-summary">' +
           "<h3>" + month + "</h3>" +
           '<span class="log-counts">' + counts + "</span>" +
           '<span class="log-toggle" aria-hidden="true"></span>' +
           "</summary>" +
           '<div class="log-content">' +
-          section("Books Read", formatBooks(entry.books)) +
-          section("Articles Read", formatArticles(entry.articles)) +
-          section("What I Learned", formatList(entry.learned)) +
-          section("Applied / Built", formatList(entry.built)) +
+          section("Books", formatBooks(entry.books)) +
+          section("Articles", formatArticles(entry.articles)) +
+          section("What I learned", formatList(entry.learned)) +
+          section("What I built", formatList(entry.built)) +
           "</div>" +
           "</details>"
         );
@@ -279,7 +279,7 @@
 
   function formatBooks(books) {
     if (!Array.isArray(books) || books.length === 0) {
-      return "<p>None recorded.</p>";
+      return '<p class="log-none">None recorded.</p>';
     }
 
     return (
@@ -290,7 +290,7 @@
           var author = escapeHtml((book && book.author) || "Unknown");
           var note = escapeHtml((book && book.note) || "");
           return (
-            "<li><strong>" + title + "</strong> - " + author +
+            "<li><strong>" + title + "</strong> <span class=\"log-author\">by " + author + "</span>" +
             (note ? '<span class="log-note">' + note + "</span>" : "") +
             "</li>"
           );
@@ -302,7 +302,7 @@
 
   function formatArticles(articles) {
     if (!Array.isArray(articles) || articles.length === 0) {
-      return "<p>None recorded.</p>";
+      return '<p class="log-none">None recorded.</p>';
     }
 
     return (
@@ -325,7 +325,7 @@
 
   function formatList(items) {
     if (!Array.isArray(items) || items.length === 0) {
-      return "<p>None recorded.</p>";
+      return '<p class="log-none">None recorded.</p>';
     }
 
     return (
