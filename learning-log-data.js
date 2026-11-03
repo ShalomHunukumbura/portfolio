@@ -1,6 +1,23 @@
 // Fallback copy of learning-log-store.json for file:// viewing. Regenerate after editing the store (see README).
 window.learningLogData = [
   {
+    "month": "October 2026",
+    "books": [],
+    "articles": [],
+    "learned": [
+      "Personal data reaches logs sideways: f-strings, whole dicts, headers, connection strings, and exception messages (a Postgres unique-constraint error carries the duplicate value). Review rarely catches it; a test that inspects log records does.",
+      "pytest's warnings summary is easy to ignore. Deprecations only become actionable when they are grouped by the library that will remove them, with the version that removes them.",
+      "RAG changes that look harmless in review, like trimming documents to save tokens, can break most answers. A small set of questions with known answers and required evidence, run in CI, catches it.",
+      "When the user of a tool is an AI model, the interface is the documentation: described parameters, enumerated choices and errors the model can act on matter more than they do for people."
+    ],
+    "built": [
+      "Released lk-tax on PyPI: Sri Lankan tax rules stored as dated, sourced data, with a calculator that runs the package in the browser through Pyodide.",
+      "Released lk-tax-mcp, an MCP server that gives AI assistants exact Sri Lankan tax tools, and payhere-sim, a local simulator for testing PayHere payment notifications.",
+      "Released three developer tools on 29 October: deprecation-radar and log-leak (pytest plugins) and ragcheck (a CLI and GitHub Action for RAG regressions), plus a tools site built from one YAML file with live PyPI numbers.",
+      "Unlisted: kept two weeks of jobs so the database fits a free Postgres tier, prepared a public read-only deployment, and added new-since-last-visit markers, keyboard shortcuts and endless scroll."
+    ]
+  },
+  {
     "month": "September 2026",
     "books": [
       {
