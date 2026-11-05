@@ -65,3 +65,38 @@ Data files:
 - Login endpoint has rate limiting.
 - Input payloads are validated before writing.
 - In production, run behind HTTPS and set `NODE_ENV=production` for HSTS + secure cookies.
+
+## Blog
+
+One post per shipped project. Posts are Markdown in `posts/`; `scripts/build_blog.py`
+renders `blog.html`, `blog/<slug>.html` and `blog/feed.xml`, which are committed so GitHub
+Pages serves them with no build step.
+
+```bash
+uv run scripts/build_blog.py
+```
+
+Front matter:
+
+```yaml
+title: The one-line bug that takes your whole site down
+description: One or two sentences for the card, the post's lead and search results.
+date: 2026-11-05            # the project's first release
+category: Developer tools   # the filter chips on the index come from these
+project:
+  name: no-hang
+  kind: CLI and GitHub Action
+  links:
+    - label: GitHub
+      url: https://github.com/ShalomHunukumbura/no-hang
+tags: [python, go]
+proof:                      # optional: the terminal on the card
+  block: 2                  # which console block (default: the first)
+  command: pytest           # the command shown when the block doesn't start with "$ "
+  # output: |               # or give the output itself
+```
+
+Console output goes in ```` ```console ```` blocks: rule codes and severities are coloured,
+and the first one becomes the card's terminal. `##` headings make the post's "On this page"
+list. The same Markdown can be pasted into dev.to; set its `canonical_url` to the post's URL
+here.

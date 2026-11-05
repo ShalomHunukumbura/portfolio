@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>The warnings you scroll past are your next upgrade outage | Shalom Hunukumbura</title>
+    <meta name="description" content="pytest already tells you what will break when Pydantic 3 or the next Python lands. It just says it in a way nobody reads." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The warnings you scroll past are your next upgrade outage" />
+    <meta property="og:description" content="pytest already tells you what will break when Pydantic 3 or the next Python lands. It just says it in a way nobody reads." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/deprecation-radar.html" />
+    <meta property="article:published_time" content="2026-10-29" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/deprecation-radar.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Developer tools</span>
+            <time datetime="2026-10-29">29 Oct 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>The warnings you scroll past are your next upgrade outage</h1>
+          <p class="post-lead">pytest already tells you what will break when Pydantic 3 or the next Python lands. It just says it in a way nobody reads.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">deprecation-radar <span>pytest plugin</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/deprecation-radar" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/pytest-deprecation-radar/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#why-the-warnings-summary-doesnt-work">Why the warnings summary doesn’t work</a></li>
+              <li><a href="#the-obvious-fixes-and-why-theyre-not-enough">The obvious fixes, and why they’re not enough</a></li>
+              <li><a href="#so-i-built-that">So I built that</a></li>
+              <li><a href="#what-it-cant-do">What it can’t do</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Every pytest run ends like this for a lot of projects:</p>
+<pre class="term"><code>=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  .../fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+app.py:10
+  app.py:10: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+.venv/lib/python3.12/site-packages/pydantic/_internal/_config.py:408
+  .../pydantic/_internal/_config.py:408: UserWarning: Valid config keys have changed in V2:
+  * 'orm_mode' has been renamed to 'from_attributes'
+    warnings.warn(message, UserWarning)
+
+app.py:28
+  app.py:28: DeprecationWarning:
+          on_event is deprecated, use lifespan event handlers instead.
+
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+
+    @app.on_event(&quot;startup&quot;)
+
+...six more like these...
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 <span class="t-passed">passed</span>, 10 warnings in 2.30s ========================</code></pre>
+<p>Ten warnings from two tests, in a 60-line block. On a real project it&rsquo;s hundreds of lines. Everyone learns to scroll past the block. Then a major
+version comes out and those warnings turn into <code>AttributeError</code>s, all at once, in the week
+you wanted to upgrade.</p>
+<p>The information you need for a planned upgrade is already in that block. Here&rsquo;s why it&rsquo;s
+so hard to use, and what I built to fix it.</p>
+<h2 id="why-the-warnings-summary-doesnt-work">Why the warnings summary doesn&rsquo;t work</h2>
+<p><strong>It&rsquo;s grouped by location and test, not by problem.</strong> A deprecated call that 40 tests go
+through is listed under the names of all 40 tests. The same deprecated method called from
+12 places is 12 separate entries, scattered through the block. What you want to know is
+&ldquo;which deprecated things do I use, and where&rdquo;, and the summary doesn&rsquo;t group it that way.</p>
+<p><strong>Your problems are mixed with your dependencies&rsquo; problems.</strong> Some warnings point at your
+code: you called <code>.dict()</code> on a Pydantic model. Others point inside a library: FastAPI&rsquo;s
+test client uses a Starlette feature that Starlette has deprecated. You can fix the first
+kind today. The second kind you fix by upgrading the dependency, or you wait. The summary
+lists both the same way.</p>
+<p><strong>It doesn&rsquo;t say when.</strong> &ldquo;Deprecated&rdquo; can mean &ldquo;removed next month&rdquo; or &ldquo;removed someday,
+maybe&rdquo;. Pydantic&rsquo;s messages say <code>to be removed in V3.0</code>. Others say nothing. You can&rsquo;t plan
+without reading every message.</p>
+<p><strong>Some deprecations don&rsquo;t look like deprecations.</strong> Python hides <code>DeprecationWarning</code> by
+default outside <code>__main__</code>, so Starlette and FastAPI raise theirs as <code>UserWarning</code>
+subclasses on purpose, to make sure people see them. That breaks the usual trick of
+filtering on the category.</p>
+<h2 id="the-obvious-fixes-and-why-theyre-not-enough">The obvious fixes, and why they&rsquo;re not enough</h2>
+<p><strong><code>-W error::DeprecationWarning</code></strong> turns every deprecation into a failure. It fails on day
+one, mostly on warnings raised inside your dependencies that you can&rsquo;t fix, so you turn it
+off by day two. It also misses the <code>UserWarning</code> ones.</p>
+<p><strong><code>filterwarnings = ignore::DeprecationWarning</code></strong> makes the block go away. That&rsquo;s the same
+as scrolling past it, but permanent.</p>
+<p><strong>Grepping for deprecated APIs</strong> works if you already know the list. You don&rsquo;t: that&rsquo;s
+what the warnings are for.</p>
+<p>What you actually want is a report grouped by library, with removal versions, pointing at
+your lines, and a gate that stops new uses getting in without failing on the old ones.</p>
+<h2 id="so-i-built-that">So I built that</h2>
+<p><a href="https://github.com/ShalomHunukumbura/deprecation-radar" target="_blank" rel="noopener noreferrer"><strong>deprecation-radar</strong></a> is a pytest
+plugin. Here is the same app&rsquo;s test run with it installed. It&rsquo;s a small FastAPI app
+written the way many 2023 tutorials wrote it, run against real, pinned versions of
+FastAPI, Pydantic, SQLAlchemy and Starlette:</p>
+<pre class="term"><code>============================== deprecation-radar ===============================
+pydantic 2.14.1: 5 deprecations, removal in 3.0
+  PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. ...
+    app.py:20 in User
+  PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. ...
+    app.py:36 in get_user
+  PydanticDeprecatedSince20: The `json` method is deprecated; use `model_dump_json` instead. ...
+    test_app.py:12 in test_user_json
+  PydanticDeprecatedSince20: The `parse_obj` method is deprecated; use `model_validate` instead. ...
+    app.py:35 in get_user
+  UserWarning: Valid config keys have changed in V2: * 'orm_mode' has been renamed to 'from_attributes'
+    inside pydantic: pydantic/_internal/_config.py:408
+fastapi 0.162.0: 1 deprecation
+  DeprecationWarning: on_event is deprecated, use lifespan event handlers instead. ...
+    app.py:28 in &lt;module&gt;
+    inside fastapi: fastapi/applications.py:4723
+Python 3.12 standard library: 1 deprecation
+  DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. ...
+    app.py:30 in startup
+SQLAlchemy 2.1.6: 1 deprecation
+  MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) ...
+    app.py:10 in &lt;module&gt;
+starlette 1.10.0: 1 deprecation, used only inside other packages
+  StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    inside fastapi: fastapi/testclient.py:1
+deprecation-radar: 9 deprecations from 5 sources, used at 7 places in your code.</code></pre>
+<p>Read it top to bottom and it&rsquo;s an upgrade plan:</p>
+<ul>
+<li><strong>Pydantic 3 will break five things</strong>, and four of them are on lines you can fix today.
+  Libraries with a known removal version come first.</li>
+<li><strong>FastAPI&rsquo;s <code>on_event</code></strong> is used at <code>app.py:28</code>.</li>
+<li><strong><code>datetime.utcnow()</code></strong> is deprecated in the standard library since Python 3.12.</li>
+<li><strong>Starlette&rsquo;s deprecation is FastAPI&rsquo;s problem</strong>, not yours. It&rsquo;s marked &ldquo;used only inside
+  other packages&rdquo;, so you know the fix is a FastAPI upgrade, not a code change.</li>
+</ul>
+<h3 id="working-out-who-deprecated-what">Working out who deprecated what</h3>
+<p>The hard part is the library name at the top of each group. A warning doesn&rsquo;t say which
+package it came from. deprecation-radar works it out in order: the warning class&rsquo;s module
+(<code>PydanticDeprecatedSince20</code> lives in <code>pydantic</code>), then package names in the message, then
+the file that raised it. When none of those say, it files the warning under &ldquo;Unknown
+source&rdquo; instead of guessing. CI runs the demo app against the pinned real libraries and
+checks that every deprecation is credited to the right package and line, so a library
+release can&rsquo;t quietly break that.</p>
+<h3 id="stopping-new-ones-getting-in">Stopping new ones getting in</h3>
+<p>A report doesn&rsquo;t stop the list growing. So:</p>
+<pre><code class="language-bash">pytest --deprecation-radar-update-baseline   # record what you use today; commit the file
+pytest                                       # a new use of a deprecated API fails the run
+</code></pre>
+<pre class="term"><code>pydantic 2.14.1: 5 deprecations, removal in 3.0
+  PydanticDeprecatedSince20: The `json` method is deprecated; use `model_dump_json` instead. ...
+    NEW app.py:40 in export
+    test_app.py:12 in test_user_json
+...
+deprecation-radar: 9 deprecations from 5 sources, used at 8 places in your code; 1 new use fails the run.</code></pre>
+<p>Two details make this usable on a real codebase. Only uses in <strong>your</strong> code can fail the
+run: deprecations inside dependencies are reported but never block you. And baseline
+entries are keyed by file, function, warning class and message, not line number, so
+adding code above an old call doesn&rsquo;t make it look new. Links are stripped from messages
+too, because Pydantic&rsquo;s links include the installed minor version
+(<code>errors.pydantic.dev/2.14/...</code>), and a minor upgrade would otherwise make every entry look
+new.</p>
+<p>On GitHub Actions, uses in your code also show up as notes on the pull request diff.</p>
+<pre><code class="language-bash">pip install pytest-deprecation-radar
+pytest
+</code></pre>
+<h2 id="what-it-cant-do">What it can&rsquo;t do</h2>
+<p>It sees what your tests run, so untested code isn&rsquo;t checked. And a library decides which
+line a warning points at (<code>stacklevel</code>). When it points inside the library, the report says
+<code>inside pydantic: ...</code> rather than guessing at your line.</p>
+<hr />
+<p>If you&rsquo;re putting off a Pydantic, SQLAlchemy or Django upgrade, run it once and see how
+long the list really is. Issues and ideas are welcome on
+<a href="https://github.com/ShalomHunukumbura/deprecation-radar" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#testing</span><span>#pytest</span><span>#fastapi</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="no-hang.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">The one-line bug that takes your whole site down</span>
+            </a>
+            <a class="pager-card is-older" href="log-leak.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">6 ways personal data gets into your Python logs (and how your tests can catch it)</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

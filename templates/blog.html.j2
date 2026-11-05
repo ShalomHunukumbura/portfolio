@@ -1,0 +1,62 @@
+{% set base = "" %}
+{% set current = "blog" %}
+<!doctype html>
+<html lang="en">
+  <head>
+{% include "_head.html.j2" %}
+    <title>Blog | Shalom Hunukumbura</title>
+    <meta name="description" content="One post for every project Shalom Hunukumbura ships: the problem, how it works, and what it found on real code." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blog | Shalom Hunukumbura" />
+    <meta property="og:description" content="One post for every project I ship: the problem, how it works, and what it found on real code." />
+    <meta property="og:url" content="{{ site }}/blog.html" />
+    <link rel="canonical" href="{{ site }}/blog.html" />
+  </head>
+  <body>
+{% include "_topbar.html.j2" %}
+
+    <main id="main">
+      <section class="page-head wrap">
+        <h1>Blog</h1>
+        <p class="page-lead">
+          One post for every project I ship: the problem it solves, how it works, and what it
+          found when I pointed it at real code.
+        </p>
+        <p class="log-totals">{{ posts | length }} posts on {{ projects }} projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
+      </section>
+
+      <section class="wrap blog-section" aria-label="Posts">
+{% if categories | length > 1 %}
+        <div class="blog-filters" role="group" aria-label="Show posts about">
+          <button type="button" class="chip" data-filter="all" aria-pressed="true">All <span>{{ posts | length }}</span></button>
+{% for c in categories %}
+          <button type="button" class="chip" data-filter="{{ c.id }}" aria-pressed="false">{{ c.name }} <span>{{ posts | selectattr("category", "equalto", c.name) | list | length }}</span></button>
+{% endfor %}
+        </div>
+{% endif %}
+
+        <ol class="post-list" reversed>
+{% for post in posts %}
+          <li class="post-card{% if loop.first %} is-featured{% endif %}" data-category="{{ post.category_id }}" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>{{ post.category }}</span>
+                <time datetime="{{ post.date.isoformat() }}">{{ post.date_label }}</time>
+                <span>{{ post.minutes }} min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="{{ post.url }}">{{ post.title }}</a></h2>
+              <p class="post-dek">{{ post.description }}</p>
+              <p class="post-project"><strong>{{ post.project.name }}</strong> {{ post.project.kind }}</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+{% include "_proof.html.j2" %}
+          </li>
+{% endfor %}
+        </ol>
+        <p class="blog-empty" hidden>No posts in this category yet.</p>
+      </section>
+    </main>
+
+{% include "_footer.html.j2" %}
+  </body>
+</html>

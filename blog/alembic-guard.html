@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>5 Alembic migrations that will take down your prod DB | Shalom Hunukumbura</title>
+    <meta name="description" content="They pass code review and they pass tests. Then they meet a table with real data." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="5 Alembic migrations that will take down your prod DB" />
+    <meta property="og:description" content="They pass code review and they pass tests. Then they meet a table with real data." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html" />
+    <meta property="article:published_time" content="2026-09-30" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Developer tools</span>
+            <time datetime="2026-09-30">30 Sep 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>5 Alembic migrations that will take down your prod DB</h1>
+          <p class="post-lead">They pass code review and they pass tests. Then they meet a table with real data.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">alembic-guard <span>CLI and GitHub Action</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/alembic-guard/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/marketplace/actions/alembic-guard" target="_blank" rel="noopener noreferrer">Marketplace <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#1-adding-a-not-null-column-without-a-default">1. Adding a NOT NULL column without a default</a></li>
+              <li><a href="#2-creating-an-index-the-normal-way">2. Creating an index the normal way</a></li>
+              <li><a href="#3-using-concurrently-inside-alembics-transaction">3. Using CONCURRENTLY inside Alembic’s transaction</a></li>
+              <li><a href="#4-renaming-a-column-or-table">4. Renaming a column (or table)</a></li>
+              <li><a href="#5-adding-a-foreign-key-or-not-null-or-a-check-to-a-busy-table">5. Adding a foreign key (or NOT NULL, or a check) to a busy table</a></li>
+              <li><a href="#why-code-review-doesnt-catch-these">Why code review doesn’t catch these</a></li>
+              <li><a href="#so-i-built-one">So I built one</a></li>
+              <li><a href="#one-more-thing-set-a-lock-timeout">One more thing: set a lock timeout</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Here&rsquo;s a migration I&rsquo;d have approved in code review without a second thought:</p>
+<pre><code class="language-python">def upgrade():
+    op.add_column(&quot;users&quot;, sa.Column(&quot;email&quot;, sa.String(255), nullable=False))
+    op.create_index(&quot;ix_users_email&quot;, &quot;users&quot;, [&quot;email&quot;], unique=True)
+    op.alter_column(&quot;users&quot;, &quot;name&quot;, new_column_name=&quot;full_name&quot;)
+    op.create_foreign_key(&quot;fk_orders_user&quot;, &quot;orders&quot;, &quot;users&quot;, [&quot;user_id&quot;], [&quot;id&quot;])
+</code></pre>
+<p>It&rsquo;s clean and readable, and it passes CI. Every one of those four lines can break
+production.</p>
+<p>I&rsquo;ve written a few dozen Alembic migrations on a production Postgres platform, and
+the lesson that took me longest to learn is this: <strong>a migration&rsquo;s Python can be
+perfectly correct and still be dangerous.</strong> The danger isn&rsquo;t in the code. It&rsquo;s in
+how Postgres behaves on a table that already has data and traffic. Your dev
+database has neither, so your tests can&rsquo;t see it.</p>
+<p>Here are the five patterns I look for, what Postgres actually does with each one,
+and how to write it safely. The errors below are real: I ran each migration
+against Postgres 16 with a seeded table.</p>
+<hr />
+<h2 id="1-adding-a-not-null-column-without-a-default">1. Adding a <code>NOT NULL</code> column without a default</h2>
+<pre><code class="language-python">op.add_column(&quot;users&quot;, sa.Column(&quot;email&quot;, sa.String(255), nullable=False))
+</code></pre>
+<p><strong>What happens:</strong> Postgres has to give every existing row a value for <code>email</code>.
+The column is <code>NOT NULL</code> and you didn&rsquo;t give it a default, so there&rsquo;s no valid value
+to use.</p>
+<pre><code>psycopg.errors.NotNullViolation: column &quot;email&quot; of relation &quot;users&quot; contains null values
+</code></pre>
+<p>On your empty dev database this works, because there are no rows to fill. On
+production it fails halfway through the deploy.</p>
+<p>A common trap: <code>default="..."</code> on the <code>Column</code> <strong>does not help</strong>. That&rsquo;s a
+Python-side default SQLAlchemy uses on insert. The database never sees it. You need
+<code>server_default</code>.</p>
+<p><strong>Safe version:</strong> add it nullable, backfill, then tighten it in a later migration.</p>
+<pre><code class="language-python">op.add_column(&quot;users&quot;, sa.Column(&quot;email&quot;, sa.String(255), nullable=True))
+# ...backfill in the app or a data migration...
+# next migration: make it NOT NULL (see #5 for how to do that safely too)
+</code></pre>
+<p>Or, if a constant default makes sense, <code>server_default=sa.text("''")</code>. Since
+Postgres 11 that&rsquo;s instant, and no rows are rewritten.</p>
+<hr />
+<h2 id="2-creating-an-index-the-normal-way">2. Creating an index the normal way</h2>
+<pre><code class="language-python">op.create_index(&quot;ix_users_email&quot;, &quot;users&quot;, [&quot;email&quot;], unique=True)
+</code></pre>
+<p><strong>What happens:</strong> a plain <code>CREATE INDEX</code> takes a lock that <strong>blocks every
+<code>INSERT</code>, <code>UPDATE</code> and <code>DELETE</code></strong> on the table until the index is built. Reads
+keep working, so it&rsquo;s easy to miss. On a big table that&rsquo;s minutes of failed
+signups, failed checkouts, failed anything.</p>
+<p>I tested it: with an index build open in one session, an insert from another
+session with a 1-second <code>lock_timeout</code> got:</p>
+<pre><code>LockNotAvailable: canceling statement due to lock timeout
+</code></pre>
+<p><strong>Safe version:</strong> build it <code>CONCURRENTLY</code>. It takes longer, but writes keep flowing.</p>
+<pre><code class="language-python">op.create_index(
+    &quot;ix_users_email&quot;, &quot;users&quot;, [&quot;email&quot;], unique=True, postgresql_concurrently=True
+)
+</code></pre>
+<p>&hellip;but if that&rsquo;s all you change, you walk straight into #3.</p>
+<hr />
+<h2 id="3-using-concurrently-inside-alembics-transaction">3. Using <code>CONCURRENTLY</code> inside Alembic&rsquo;s transaction</h2>
+<p>Alembic wraps each Postgres migration in a transaction. That&rsquo;s usually what you
+want: if step 3 fails, steps 1 and 2 roll back. But Postgres flatly refuses to
+run a concurrent index build inside a transaction:</p>
+<pre><code>ActiveSqlTransaction: CREATE INDEX CONCURRENTLY cannot run inside a transaction block
+</code></pre>
+<p>This one is a guaranteed failure at deploy time, not a &ldquo;maybe on a big table&rdquo;.</p>
+<p><strong>Safe version:</strong> step out of the transaction for just that operation.</p>
+<pre><code class="language-python">with op.get_context().autocommit_block():
+    op.create_index(
+        &quot;ix_users_email&quot;, &quot;users&quot;, [&quot;email&quot;], unique=True, postgresql_concurrently=True
+    )
+</code></pre>
+<hr />
+<h2 id="4-renaming-a-column-or-table">4. Renaming a column (or table)</h2>
+<pre><code class="language-python">op.alter_column(&quot;users&quot;, &quot;name&quot;, new_column_name=&quot;full_name&quot;)
+</code></pre>
+<p><strong>What happens:</strong> the rename itself is instant, and that&rsquo;s the problem. Deploys
+aren&rsquo;t. For a window of seconds to minutes, <strong>the old version of your app is still
+running</strong>, still selecting <code>users.name</code>, and every one of those queries now fails.</p>
+<p>Dropping a column has the same problem. SQLAlchemy selects every mapped column,
+so even code that never touches the dropped column breaks if the model still has it.</p>
+<p><strong>Safe version: expand and contract.</strong></p>
+<ol>
+<li>Add <code>full_name</code>. Write to both columns.</li>
+<li>Backfill <code>full_name</code> from <code>name</code>.</li>
+<li>Switch reads to <code>full_name</code>. Deploy.</li>
+<li>Remove <code>name</code> from the code. Deploy.</li>
+<li><em>Now</em> drop <code>name</code> in a migration.</li>
+</ol>
+<p>It&rsquo;s more steps. It&rsquo;s also the only way to get zero downtime.</p>
+<hr />
+<h2 id="5-adding-a-foreign-key-or-not-null-or-a-check-to-a-busy-table">5. Adding a foreign key (or <code>NOT NULL</code>, or a check) to a busy table</h2>
+<pre><code class="language-python">op.create_foreign_key(&quot;fk_orders_user&quot;, &quot;orders&quot;, &quot;users&quot;, [&quot;user_id&quot;], [&quot;id&quot;])
+</code></pre>
+<p><strong>What happens:</strong> Postgres checks that every existing <code>orders.user_id</code> points at a
+real user, and while it checks it <strong>blocks writes on both tables</strong>. <code>SET NOT NULL</code>
+is even stronger: it scans the whole table while blocking reads <em>and</em> writes.</p>
+<p><strong>Safe version:</strong> add the constraint without checking old rows, then check them
+separately under a much lighter lock.</p>
+<pre><code class="language-python">op.create_foreign_key(
+    &quot;fk_orders_user&quot;, &quot;orders&quot;, &quot;users&quot;, [&quot;user_id&quot;], [&quot;id&quot;], postgresql_not_valid=True
+)
+# next migration:
+op.execute(&quot;ALTER TABLE orders VALIDATE CONSTRAINT fk_orders_user&quot;)
+</code></pre>
+<p>New rows are checked immediately, old rows are checked during <code>VALIDATE</code>, and
+writes keep flowing the whole time.</p>
+<p>For <code>NOT NULL</code>, the same trick works: add <code>CHECK (email IS NOT NULL) NOT VALID</code>,
+validate it, then <code>SET NOT NULL</code>. Postgres 12+ sees the valid check and skips the
+full scan.</p>
+<hr />
+<h2 id="why-code-review-doesnt-catch-these">Why code review doesn&rsquo;t catch these</h2>
+<p>Look back at the migration at the top. Nothing about it is <em>wrong</em> Python. The
+reviewer would need to know Postgres lock levels, Alembic&rsquo;s transaction behaviour,
+and your deploy process, and remember all of it on every PR, forever.</p>
+<p>That&rsquo;s a job for a machine.</p>
+<h2 id="so-i-built-one">So I built one</h2>
+<p><a href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer"><strong>alembic-guard</strong></a> is a
+linter for Alembic migrations. It reads your migration files with Python&rsquo;s <code>ast</code>
+module, so there&rsquo;s no database and nothing gets imported or executed, and it flags
+all five patterns above plus a few more (type changes, volatile defaults like
+<code>gen_random_uuid()</code>, unique constraints on existing tables).</p>
+<p><img alt="alembic-guard catching a dangerous migration" src="https://raw.githubusercontent.com/ShalomHunukumbura/alembic-guard/main/docs/demo.gif" /></p>
+<pre><code class="language-bash">pip install alembic-guard
+alembic-guard
+</code></pre>
+<p>Or as a GitHub Action that annotates the exact lines on the PR diff:</p>
+<pre><code class="language-yaml">- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
+- uses: ShalomHunukumbura/alembic-guard@v0
+</code></pre>
+<p>By default it only checks migrations the PR changes, so you can add it to a repo with
+years of history without drowning in old warnings. It&rsquo;s also smart about context:
+an index on a table created <em>in the same migration</em> isn&rsquo;t flagged, because
+nobody can be using that table yet.</p>
+<p>There&rsquo;s a <a href="https://github.com/ShalomHunukumbura/alembic-guard-demo/pulls" target="_blank" rel="noopener noreferrer">demo repo</a>
+with two open PRs building the same feature. The first is the migration from the top of this
+post: alembic-guard flags it, and when CI runs it against 50,000 users and
+200,000 orders, it crashes with the <code>NotNullViolation</code> above. The second is the
+zero-downtime version, which passes both.</p>
+<h2 id="one-more-thing-set-a-lock-timeout">One more thing: set a lock timeout</h2>
+<p>Even with a linter, set this at the top of your migrations (or in <code>env.py</code>):</p>
+<pre><code class="language-python">op.execute(&quot;SET lock_timeout = '5s'&quot;)
+</code></pre>
+<p>If a migration can&rsquo;t get its lock within 5 seconds, it fails instead of queueing
+behind a long-running query while every other request queues behind <em>it</em>. A failed
+migration you can retry. A 10-minute pile-up you can&rsquo;t undo.</p>
+<hr />
+<p>If you use Alembic in production, I&rsquo;d love to hear which patterns you&rsquo;ve been
+bitten by that aren&rsquo;t on this list. Issues and PRs are welcome on
+<a href="https://github.com/ShalomHunukumbura/alembic-guard" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#postgres</span><span>#sqlalchemy</span><span>#devops</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="log-leak.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">6 ways personal data gets into your Python logs (and how your tests can catch it)</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

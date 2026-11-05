@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Shalom Hunukumbura, blog</title>
+  <link>https://shalomhunukumbura.github.io/portfolio/blog.html</link>
+  <description>One post for every project I ship.</description>
+  <item>
+    <title>The one-line bug that takes your whole site down</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/no-hang.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/no-hang.html</guid>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 +0000</pubDate>
+    <description>A call with no timeout passes review and every test, then holds a worker forever the day a dependency stalls. no-hang finds them in Python, JavaScript, TypeScript and Go.</description>
+  </item>
+  <item>
+    <title>The warnings you scroll past are your next upgrade outage</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/deprecation-radar.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/deprecation-radar.html</guid>
+    <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
+    <description>pytest already tells you what will break when Pydantic 3 or the next Python lands. It just says it in a way nobody reads.</description>
+  </item>
+  <item>
+    <title>6 ways personal data gets into your Python logs (and how your tests can catch it)</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/log-leak.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/log-leak.html</guid>
+    <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
+    <description>Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings.</description>
+  </item>
+  <item>
+    <title>5 Alembic migrations that will take down your prod DB</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+    <description>They pass code review and they pass tests. Then they meet a table with real data.</description>
+  </item>
+</channel>
+</rss>

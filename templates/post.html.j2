@@ -1,0 +1,89 @@
+{% set base = "../" %}
+{% set current = "blog" %}
+<!doctype html>
+<html lang="en">
+  <head>
+{% include "_head.html.j2" %}
+    <title>{{ post.title }} | Shalom Hunukumbura</title>
+    <meta name="description" content="{{ post.description }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ post.title }}" />
+    <meta property="og:description" content="{{ post.description }}" />
+    <meta property="og:url" content="{{ site }}/{{ post.url }}" />
+    <meta property="article:published_time" content="{{ post.date.isoformat() }}" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="{{ site }}/{{ post.url }}" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+{% include "_topbar.html.j2" %}
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>{{ post.category }}</span>
+            <time datetime="{{ post.date.isoformat() }}">{{ post.date_label }}</time>
+            <span>{{ post.minutes }} min read</span>
+          </p>
+          <h1>{{ post.title }}</h1>
+          <p class="post-lead">{{ post.description }}</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">{{ post.project.name }} <span>{{ post.project.kind }}</span></p>
+            </div>
+            <div class="links">
+{% for link in post.project.links %}
+              <a class="text-link" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.label }} <span aria-hidden="true">↗</span></a>
+{% endfor %}
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+{% if post.toc | length > 2 %}
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+{% for item in post.toc %}
+              <li><a href="#{{ item.id }}">{{ item.name }}</a></li>
+{% endfor %}
+            </ol>
+          </nav>
+{% endif %}
+          <div class="prose">
+{{ post.body }}
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+{% if post.tags %}
+          <p class="post-tags">{% for t in post.tags %}<span>#{{ t }}</span>{% endfor %}</p>
+{% endif %}
+          <nav class="post-pager" aria-label="More posts">
+{% if post.prev %}
+            <a class="pager-card" href="{{ post.prev.slug }}.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">{{ post.prev.title }}</span>
+            </a>
+{% endif %}
+{% if post.next %}
+            <a class="pager-card is-older" href="{{ post.next.slug }}.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">{{ post.next.title }}</span>
+            </a>
+{% endif %}
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+{% include "_footer.html.j2" %}
+  </body>
+</html>

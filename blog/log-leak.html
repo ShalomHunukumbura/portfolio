@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>6 ways personal data gets into your Python logs (and how your tests can catch it) | Shalom Hunukumbura</title>
+    <meta name="description" content="Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="6 ways personal data gets into your Python logs (and how your tests can catch it)" />
+    <meta property="og:description" content="Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/log-leak.html" />
+    <meta property="article:published_time" content="2026-10-29" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/log-leak.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Developer tools</span>
+            <time datetime="2026-10-29">29 Oct 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>6 ways personal data gets into your Python logs (and how your tests can catch it)</h1>
+          <p class="post-lead">Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">log-leak <span>pytest plugin</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/log-leak" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/pytest-log-leak/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#1-the-f-string">1. The f-string</a></li>
+              <li><a href="#2-the-exception-message">2. The exception message</a></li>
+              <li><a href="#3-the-whole-dict">3. The whole dict</a></li>
+              <li><a href="#4-headers">4. Headers</a></li>
+              <li><a href="#5-the-connection-string">5. The connection string</a></li>
+              <li><a href="#6-extra">6. extra={...}</a></li>
+              <li><a href="#why-code-review-doesnt-catch-these">Why code review doesn’t catch these</a></li>
+              <li><a href="#so-i-built-that">So I built that</a></li>
+              <li><a href="#what-it-cant-do">What it can’t do</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Nobody writes <code>log.info(user_password)</code> on purpose. Personal data gets into logs sideways:
+through a debugging f-string that never got removed, an exception message, a dict logged
+whole, a database URL printed at startup.</p>
+<p>And logs travel. They go to a log platform, get kept for months, get exported to a bucket,
+get pasted into a Slack thread while someone debugs. A user&rsquo;s email address in a database
+row is protected by access control. The same address in a log line is readable by everyone
+who can read logs.</p>
+<p>I work on a tax and compliance platform, where the data in a request is exactly the data
+that shouldn&rsquo;t be in a log. Here are six ways it gets in. The report near the end is real
+output from running a small demo app&rsquo;s tests (linked at the bottom).</p>
+<hr />
+<h2 id="1-the-f-string">1. The f-string</h2>
+<pre><code class="language-python">log.info(f&quot;created user {email}&quot;)
+</code></pre>
+<p>This is the most common one by far. It&rsquo;s useful while you build the feature, it reads fine
+in review, and it ships. From then on every signup writes an email address to your logs.</p>
+<p><strong>Fix:</strong> log the ID you already have.</p>
+<pre><code class="language-python">log.info(&quot;created user %s&quot;, user.id)
+</code></pre>
+<hr />
+<h2 id="2-the-exception-message">2. The exception message</h2>
+<pre><code class="language-python">try:
+    db.add(user)
+    db.commit()
+except IntegrityError:
+    log.exception(&quot;signup failed&quot;)
+</code></pre>
+<p>The log message is harmless. The exception isn&rsquo;t. A unique constraint violation from
+Postgres carries the duplicate value in its text:</p>
+<pre><code>DETAIL:  Key (email)=(amal@example.com) already exists.
+</code></pre>
+<p><code>log.exception</code> writes that whole message, plus the traceback, into the log record. Your
+code never mentions the email, and it&rsquo;s logged anyway.</p>
+<p><strong>Fix:</strong> catch it, log what happened in your own words, and don&rsquo;t attach the exception text
+when it can carry user input. Or turn the database error into your own exception with a
+safe message before it gets logged.</p>
+<hr />
+<h2 id="3-the-whole-dict">3. The whole dict</h2>
+<pre><code class="language-python">log.warning(&quot;login failed for %s&quot;, form)
+</code></pre>
+<p>Logging a whole request body, form or model is convenient, because you get everything. That&rsquo;s
+the problem: you get everything, including the <code>password</code> field.</p>
+<p><strong>Fix:</strong> log the fields you need (<code>form["username"]</code>), or mask sensitive keys before
+logging.</p>
+<hr />
+<h2 id="4-headers">4. Headers</h2>
+<pre><code class="language-python">log.debug(&quot;calling payments API with %s&quot;, headers)
+</code></pre>
+<p>The <code>Authorization</code> header is a credential. A <code>Bearer</code> token or an API key in a DEBUG log
+is one log-level change away from production, and many teams turn on DEBUG in production
+for a while to chase a bug.</p>
+<p><strong>Fix:</strong> never log headers whole. If you need them, drop <code>Authorization</code>, <code>Cookie</code> and
+anything named like a key first.</p>
+<hr />
+<h2 id="5-the-connection-string">5. The connection string</h2>
+<pre><code class="language-python">log.info(&quot;connecting to %s&quot;, settings.database_url)
+</code></pre>
+<p><code>postgresql://app:s3cretpw@db.internal/prod</code>. That&rsquo;s the production database password,
+written to the logs every time the app starts.</p>
+<p><strong>Fix:</strong> SQLAlchemy can do this for you:
+<code>engine.url.render_as_string(hide_password=True)</code>.</p>
+<hr />
+<h2 id="6-extra">6. <code>extra={...}</code></h2>
+<pre><code class="language-python">log.info(&quot;sending OTP&quot;, extra={&quot;to&quot;: phone})
+</code></pre>
+<p>Structured logging is great, and <code>extra</code> fields end up as searchable columns in your log
+platform. That also makes them the easiest place to search for a phone number.</p>
+<p><strong>Fix:</strong> same as the f-string: log an internal ID, or only the last few digits.</p>
+<hr />
+<h2 id="why-code-review-doesnt-catch-these">Why code review doesn&rsquo;t catch these</h2>
+<p>Each of these lines looks reasonable on its own. Number 2 doesn&rsquo;t even mention the data.
+Number 5 depends on what&rsquo;s in an environment variable. To catch them in review, the
+reviewer has to know what every variable will hold at runtime.</p>
+<p>But your tests know. They already run these code paths with realistic data: a test user
+with an email, a login with a wrong password, a duplicate signup. The data goes through the
+logging calls during the test run. Something just needs to look at it.</p>
+<h2 id="so-i-built-that">So I built that</h2>
+<p><a href="https://github.com/ShalomHunukumbura/log-leak" target="_blank" rel="noopener noreferrer"><strong>log-leak</strong></a> is a pytest plugin. While your
+tests run, it reads every log record your code writes and checks the message, any logged
+exception, and <code>extra</code> fields for emails, phone numbers, NIC numbers, card numbers,
+passwords, tokens, API keys and URLs with passwords in them.</p>
+<pre><code class="language-bash">pip install pytest-log-leak
+pytest
+</code></pre>
+<p>There&rsquo;s nothing to configure. Here&rsquo;s what it printed for the six examples above:</p>
+<pre class="term"><code>=================================== log-leak ===================================
+app/auth.py:7  <span class="t-code">LL006</span> credential  A value under a key like password, secret or token was logged.
+    in login(), logger 'app.auth' at WARNING
+    message: login <span class="t-failed">failed</span> for {'username': 'amal', 'password': '&lt;credential&gt;'}
+    template: login <span class="t-failed">failed</span> for %s
+    first seen in: test_app.py::test_login
+    fix: Log only the fields you need, or mask sensitive keys before logging.
+app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known format was logged.
+    in call_api(), logger 'app.auth' at DEBUG
+    message: calling payments API with {'Authorization': 'Bearer &lt;api-key&gt;'}
+    template: calling payments API with %s
+    first seen in: test_app.py::test_api
+    fix: Remove the key from the log call. If it reached real logs, rotate it.
+app/auth.py:15  <span class="t-code">LL004</span> url-credentials  A URL with a password in it was logged.
+    in connect(), logger 'app.auth' at INFO
+    message: connecting to postgresql://app:&lt;url-credentials&gt;@db.internal/prod
+    template: connecting to %s
+    first seen in: test_app.py::test_connect
+    fix: Log the URL with the password masked, e.g. SQLAlchemy's `url.render_as_string(hide_password=True)`.
+app/users.py:14  <span class="t-code">LL009</span> email  An email address was logged.
+    in create_user(), logger 'app.users' at INFO
+    message: created user &lt;email&gt;
+    first seen in: test_app.py::test_register_twice
+    fix: Log an internal user ID instead.
+app/users.py:24  <span class="t-code">LL009</span> email  An email address was logged.
+    in register(), logger 'app.users' at ERROR
+    exception: app.users.DuplicateEmail: Key (email)=(&lt;email&gt;) already exists.
+    first seen in: test_app.py::test_register_twice
+    fix: Log an internal user ID instead.
+app/users.py:28  <span class="t-code">LL010</span> phone  A phone number was logged.
+    in send_otp(), logger 'app.users' at INFO
+    extra:to: &lt;phone&gt;
+    first seen in: test_app.py::test_otp
+    fix: Log an internal user ID, or only the last few digits.
+log-leak: found 6 leaks at 6 call sites, logged by 5 tests.</code></pre>
+<p>A few decisions worth explaining:</p>
+<ul>
+<li><strong>The report never shows the leaked value.</strong> It shows where the log call is and the
+  message with the value masked. Otherwise your CI log would become a second leak.</li>
+<li><strong>Fake test data counts.</strong> If a test logs <code>amal@example.com</code>, the same line logs real
+  addresses in production. The test data isn&rsquo;t the problem; the line is.</li>
+<li><strong>It fails the run.</strong> A warning at the bottom of a test run gets scrolled past forever.
+  For a project with existing leaks, <code>pytest --log-leak-update-baseline</code> records them, and
+  only new ones fail the run.</li>
+<li><strong>It has to be almost never wrong,</strong> or people turn it off. I tuned the detectors against
+  32,000 real log lines from 16 systems in <a href="https://github.com/logpai/loghub" target="_blank" rel="noopener noreferrer">Loghub</a>. The
+  first run had 67 false positives: HDFS block IDs that pass the card checksum, timestamps
+  that looked like phone numbers, <code>token=Token{a64f992}</code> object descriptions. Each one is
+  fixed and kept as a test. The 12 hits left are all real email addresses.</li>
+</ul>
+<p>On GitHub Actions it also adds each leak as an annotation on the pull request diff, at the
+logging line.</p>
+<h2 id="what-it-cant-do">What it can&rsquo;t do</h2>
+<p>It only sees code your tests run, and only records that reach the root logger. It doesn&rsquo;t
+support pytest-xdist yet. It&rsquo;s a net under your tests, not a scanner for your whole
+codebase.</p>
+<hr />
+<p>The demo app is [in this gist / repo link]. If you try log-leak on a real project, I&rsquo;d like
+to hear what it found, and especially any false positives. Issues are welcome on
+<a href="https://github.com/ShalomHunukumbura/log-leak" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#security</span><span>#testing</span><span>#logging</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="deprecation-radar.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">The warnings you scroll past are your next upgrade outage</span>
+            </a>
+            <a class="pager-card is-older" href="alembic-guard.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">5 Alembic migrations that will take down your prod DB</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

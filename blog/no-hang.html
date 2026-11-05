@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>The one-line bug that takes your whole site down | Shalom Hunukumbura</title>
+    <meta name="description" content="A call with no timeout passes review and every test, then holds a worker forever the day a dependency stalls. no-hang finds them in Python, JavaScript, TypeScript and Go." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The one-line bug that takes your whole site down" />
+    <meta property="og:description" content="A call with no timeout passes review and every test, then holds a worker forever the day a dependency stalls. no-hang finds them in Python, JavaScript, TypeScript and Go." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/no-hang.html" />
+    <meta property="article:published_time" content="2026-11-05" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/no-hang.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Developer tools</span>
+            <time datetime="2026-11-05">5 Nov 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>The one-line bug that takes your whole site down</h1>
+          <p class="post-lead">A call with no timeout passes review and every test, then holds a worker forever the day a dependency stalls. no-hang finds them in Python, JavaScript, TypeScript and Go.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">no-hang <span>CLI and GitHub Action</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/no-hang" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/no-hang/releases/latest" target="_blank" rel="noopener noreferrer">Release <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#it-isnt-just-requests">It isn’t just requests</a></li>
+              <li><a href="#no-hang">no-hang</a></li>
+              <li><a href="#reading-code-not-grepping-it">Reading code, not grepping it</a></li>
+              <li><a href="#what-it-found">What it found</a></li>
+              <li><a href="#calls-that-are-meant-to-wait">Calls that are meant to wait</a></li>
+              <li><a href="#adopting-it-without-fixing-everything-first">Adopting it without fixing everything first</a></li>
+              <li><a href="#in-ci">In CI</a></li>
+              <li><a href="#try-it">Try it</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>This line passes code review and every test:</p>
+<pre><code class="language-python">requests.post(GATEWAY_URL, json=payment)
+</code></pre>
+<p><code>requests</code> has no default timeout. The day the payment gateway accepts connections but
+stops answering, every worker that calls it waits. Not for 30 seconds: forever, or until
+the process is restarted. The worker pool fills up, and the whole site stops responding,
+including the pages that never touch the gateway.</p>
+<p>Tests don&rsquo;t catch it, because tests mock the network or the network answers fast. Code
+review doesn&rsquo;t catch it, because nothing on the line looks wrong. You find out from the
+incident.</p>
+<h2 id="it-isnt-just-requests">It isn&rsquo;t just requests</h2>
+<p>Most clients that talk over a network have a default for how long to wait, and a lot of
+those defaults are &ldquo;forever&rdquo;:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python <code>requests</code>, and a <code>requests.Session</code></td>
+<td>no timeout</td>
+</tr>
+<tr>
+<td><code>urllib.request.urlopen</code>, <code>smtplib</code>, <code>http.client</code></td>
+<td>the socket default: none</td>
+</tr>
+<tr>
+<td>redis-py</td>
+<td><code>socket_timeout=None</code></td>
+</tr>
+<tr>
+<td>asyncpg</td>
+<td>connects in 60 s, but <code>command_timeout=None</code></td>
+</tr>
+<tr>
+<td>axios</td>
+<td><code>timeout: 0</code>, which means none</td>
+</tr>
+<tr>
+<td>node-postgres <code>Pool</code></td>
+<td>no <code>connectionTimeoutMillis</code>: a full pool queues forever</td>
+</tr>
+<tr>
+<td>ioredis</td>
+<td>connects in 10 s, no <code>commandTimeout</code></td>
+</tr>
+<tr>
+<td>Go <code>http.Get</code> and <code>http.DefaultClient</code></td>
+<td><code>Timeout</code> is 0, none</td>
+</tr>
+</tbody>
+</table></div>
+<p>And some are fine. <code>httpx</code> gives up after 5 seconds, <code>aiohttp</code> after 5 minutes, Node&rsquo;s
+built-in <code>fetch</code> after 300 seconds without headers, boto3 after 60. A tool that flags every
+HTTP call without a timeout argument is mostly noise.</p>
+<p>I read each default in the library&rsquo;s own source before writing a check for it: Python
+3.12&rsquo;s standard library, redis-py 6.2, asyncpg, SQLAlchemy 2.0, axios, pg-pool, undici,
+ioredis 6.0 and Go 1.26. Getting one wrong means either a false alarm on every call or a
+real hang it never reports.</p>
+<h2 id="no-hang">no-hang</h2>
+<p>So I built <a href="https://github.com/ShalomHunukumbura/no-hang" target="_blank" rel="noopener noreferrer">no-hang</a>, an open-source CLI
+and GitHub Action that finds these calls. Here it is on a small app with a Python service,
+a TypeScript API and a Go worker:</p>
+<pre class="term"><code><span class="t-cmd">$ no-hang</span>
+app/payments.py:10:16  <span class="t-code">NH001</span> <span class="t-error">error</span>  self.session.post() has no timeout, and a requests.Session has no default, so it waits forever if the server stops answering. Setting the session's .timeout does nothing in requests.
+    fix: Pass timeout=(connect, read) in seconds, e.g. timeout=(3.05, 30). The read timeout is the longest gap between bytes, not the total time.
+web/db.ts:4:21  <span class="t-code">NH006</span> <span class="t-warning">warning</span>  new Pool() has no connectionTimeoutMillis, so once every connection is busy, the next query waits forever for one.
+    fix: Pass connectionTimeoutMillis: 5000.
+web/db.ts:5:20  <span class="t-code">NH001</span> <span class="t-error">error</span>  axios.create() has no timeout, so every request through this instance waits forever if the server stops answering.
+    fix: Pass { timeout: 10000 } in milliseconds, or set it once with axios.create({ timeout }) or axios.defaults.timeout.
+worker/main.go:6:12  <span class="t-code">NH001</span> <span class="t-error">error</span>  http.Get() uses http.DefaultClient, which has no timeout, so it waits forever if the server stops answering.
+    fix: Make an http.Client{Timeout: 10 * time.Second}, or build requests with http.NewRequestWithContext and a context.WithTimeout.
+Found 3 errors and 1 <span class="t-warning">warning</span> in 3 files.</code></pre>
+<p>The first finding is the one I like most. The code sets <code>self.session.timeout = 10</code>,
+which looks like it fixes the problem. It doesn&rsquo;t: <code>requests</code> ignores that attribute. The
+session is created in <code>__init__</code> and used in another method, and no-hang follows it there
+and says why the line above didn&rsquo;t help.</p>
+<h2 id="reading-code-not-grepping-it">Reading code, not grepping it</h2>
+<p>no-hang parses each file with tree-sitter, so a call inside a comment or a string is never
+reported, and <code>import requests as r</code> or <code>const { execSync } = require('child_process')</code> is
+followed to the real function. It also follows clients from where they&rsquo;re made to where
+they&rsquo;re used: <code>with requests.Session() as s</code>, <code>self.session</code> across methods, sessions
+created inline.</p>
+<p>The harder part was knowing when to stay quiet:</p>
+<ul>
+<li>A session that mounts an adapter, or a socket that calls <code>settimeout()</code>, may have a
+  timeout no-hang can&rsquo;t see, so it&rsquo;s left alone.</li>
+<li>A session passed in as a parameter was set up by the caller, so only an explicit
+  <code>timeout=None</code> on it is reported.</li>
+<li><code>socket.setdefaulttimeout(10)</code> in a file bounds the standard library&rsquo;s clients, and
+  no-hang takes that into account.</li>
+<li>A Go <code>http.Client{}</code> without a <code>Timeout</code> is fine if the file builds its requests with a
+  context, or if its Transport sets <code>ResponseHeaderTimeout</code>.</li>
+<li>A connection string from settings can&rsquo;t be read. Those calls get a note, which never
+  fails the run, instead of a guess either way.</li>
+</ul>
+<p>Some of these came straight from false positives on real code. anyio passes non-blocking
+sockets around as parameters, which is where the parameter rule came from. pprof&rsquo;s client
+sets <code>ResponseHeaderTimeout</code> on its Transport. And gevent calls <code>connect()</code> on a UDP
+socket, which never waits, so UDP sockets are skipped too.</p>
+<h2 id="what-it-found">What it found</h2>
+<p>I pointed it at the packages installed on my laptop, about 14,000 Python files, which took
+about 6 seconds. Some of what it found:</p>
+<ul>
+<li>redis-py&rsquo;s OCSP certificate check calls <code>requests.get(issuer_url)</code> and
+  <code>requests.get(ocsp_url, ...)</code> with no timeout, still there in 6.2.0. A slow OCSP
+  responder stalls the Redis connection that&rsquo;s being verified.</li>
+<li>tqdm&rsquo;s Discord and Telegram notifiers post through a <code>requests.Session</code> with no timeout.</li>
+<li>fsspec&rsquo;s Jupyter and WebHDFS backends send requests through a session with no
+  timeout.</li>
+<li>huggingface_hub&rsquo;s default <code>httpx</code> clients are built with <code>timeout=None</code>, turning off
+  httpx&rsquo;s 5 second default for any request that doesn&rsquo;t pass its own.</li>
+</ul>
+<p>And in my own code: a node-postgres <code>Pool</code> with no <code>connectionTimeoutMillis</code>, eight axios
+calls with no timeout in a Next.js frontend, and a test that calls <code>urlopen</code> with no
+timeout.</p>
+<p>Go&rsquo;s own source, 7,700 files, takes 2 seconds.</p>
+<h2 id="calls-that-are-meant-to-wait">Calls that are meant to wait</h2>
+<p>Some calls should wait. A release build takes as long as it takes; a queue worker blocks on
+<code>BLPOP</code> by design. Say so on the line:</p>
+<pre><code class="language-python">subprocess.run([&quot;make&quot;, &quot;release&quot;])  # no-hang: ignore[NH003] a release build takes what it takes
+</code></pre>
+<p>The summary counts what comments turned off, so nothing disappears silently. Subprocess
+calls are warnings rather than errors for the same reason, and only fail the run with
+<code>--strict</code>.</p>
+<h2 id="adopting-it-without-fixing-everything-first">Adopting it without fixing everything first</h2>
+<pre><code class="language-bash">no-hang --write-baseline .no-hang-baseline.json   # save what's there today
+no-hang --baseline .no-hang-baseline.json         # fail only on new findings
+</code></pre>
+<p>Findings are matched by file, rule and the call they name, not by line number, so editing
+the rest of a file doesn&rsquo;t bring old ones back.</p>
+<h2 id="in-ci">In CI</h2>
+<pre><code class="language-yaml">- uses: actions/checkout@v4
+- uses: ShalomHunukumbura/no-hang@v0.1.0
+</code></pre>
+<p>Findings show up on the pull request&rsquo;s diff, and the full report goes in the job summary.
+The action downloads a prebuilt binary for Linux, macOS or Windows and checks its SHA-256
+before running it. There&rsquo;s nothing to install, and it doesn&rsquo;t need Python, Node or Go on
+the runner.</p>
+<h2 id="try-it">Try it</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/ShalomHunukumbura/no-hang" target="_blank" rel="noopener noreferrer">github.com/ShalomHunukumbura/no-hang</a></li>
+<li><code>no-hang --explain NH001</code> says why each rule exists, with the fix for each language.</li>
+</ul>
+<p>If it reports something you think is wrong, open an issue with the snippet. That&rsquo;s how
+the quiet rules above got written.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#javascript</span><span>#go</span><span>#devops</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card is-older" href="deprecation-radar.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">The warnings you scroll past are your next upgrade outage</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{% if post.proof %}
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ {{ post.proof.command }}</code></figcaption>
+  <pre class="proof-body"><code>{{ post.proof.html }}</code></pre>
+</figure>
+{% endif %}

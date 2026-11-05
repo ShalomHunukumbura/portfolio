@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="blog.css" />
+    <script src="boot.js"></script>
+    <title>Blog | Shalom Hunukumbura</title>
+    <meta name="description" content="One post for every project Shalom Hunukumbura ships: the problem, how it works, and what it found on real code." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blog | Shalom Hunukumbura" />
+    <meta property="og:description" content="One post for every project I ship: the problem, how it works, and what it found on real code." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog.html" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog.html" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="index.html#experience">Experience</a>
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="blog.html" aria-current="page">Blog</a>
+          <a href="learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="page-head wrap">
+        <h1>Blog</h1>
+        <p class="page-lead">
+          One post for every project I ship: the problem it solves, how it works, and what it
+          found when I pointed it at real code.
+        </p>
+        <p class="log-totals">4 posts on 4 projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
+      </section>
+
+      <section class="wrap blog-section" aria-label="Posts">
+
+        <ol class="post-list" reversed>
+          <li class="post-card is-featured" data-category="developer-tools" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Developer tools</span>
+                <time datetime="2026-11-05">5 Nov 2026</time>
+                <span>6 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/no-hang.html">The one-line bug that takes your whole site down</a></h2>
+              <p class="post-dek">A call with no timeout passes review and every test, then holds a worker forever the day a dependency stalls. no-hang finds them in Python, JavaScript, TypeScript and Go.</p>
+              <p class="post-project"><strong>no-hang</strong> CLI and GitHub Action</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ no-hang</code></figcaption>
+  <pre class="proof-body"><code>app/payments.py:10:16  <span class="t-code">NH001</span> <span class="t-error">error</span>  self.session.post() has no timeout, and a requests.Session has no default, so it waits forever if the server stops answering. Setting the session's .timeout does nothing in requests.
+web/db.ts:4:21  <span class="t-code">NH006</span> <span class="t-warning">warning</span>  new Pool() has no connectionTimeoutMillis, so once every connection is busy, the next query waits forever for one.
+web/db.ts:5:20  <span class="t-code">NH001</span> <span class="t-error">error</span>  axios.create() has no timeout, so every request through this instance waits forever if the server stops answering.
+worker/main.go:6:12  <span class="t-code">NH001</span> <span class="t-error">error</span>  http.Get() uses http.DefaultClient, which has no timeout, so it waits forever if the server stops answering.
+Found 3 errors and 1 <span class="t-warning">warning</span> in 3 files.</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="developer-tools" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Developer tools</span>
+                <time datetime="2026-10-29">29 Oct 2026</time>
+                <span>6 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/deprecation-radar.html">The warnings you scroll past are your next upgrade outage</a></h2>
+              <p class="post-dek">pytest already tells you what will break when Pydantic 3 or the next Python lands. It just says it in a way nobody reads.</p>
+              <p class="post-project"><strong>deprecation-radar</strong> pytest plugin</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ pytest</code></figcaption>
+  <pre class="proof-body"><code>pydantic 2.14.1: 5 deprecations, removal in 3.0
+  PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. ...
+    app.py:20 in User
+  PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. ...
+    app.py:36 in get_user
+  PydanticDeprecatedSince20: The `json` method is deprecated; use `model_dump_json` instead. ...</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="developer-tools" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Developer tools</span>
+                <time datetime="2026-10-29">29 Oct 2026</time>
+                <span>6 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/log-leak.html">6 ways personal data gets into your Python logs (and how your tests can catch it)</a></h2>
+              <p class="post-dek">Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings.</p>
+              <p class="post-project"><strong>log-leak</strong> pytest plugin</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ pytest</code></figcaption>
+  <pre class="proof-body"><code>app/auth.py:7  <span class="t-code">LL006</span> credential  A value under a key like password, secret or token was logged.
+    in login(), logger 'app.auth' at WARNING
+    message: login <span class="t-failed">failed</span> for {'username': 'amal', 'password': '&lt;credential&gt;'}
+    template: login <span class="t-failed">failed</span> for %s
+    first seen in: test_app.py::test_login
+app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known format was logged.</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="developer-tools" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Developer tools</span>
+                <time datetime="2026-09-30">30 Sep 2026</time>
+                <span>6 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/alembic-guard.html">5 Alembic migrations that will take down your prod DB</a></h2>
+              <p class="post-dek">They pass code review and they pass tests. Then they meet a table with real data.</p>
+              <p class="post-project"><strong>alembic-guard</strong> CLI and GitHub Action</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ alembic-guard</code></figcaption>
+  <pre class="proof-body"><code>migrations/versions/0002_add_email.py:13:5  <span class="t-code">AG001</span> <span class="t-error">error</span>  Adding NOT NULL column "users.email" without a server_default fails on a table with rows.
+migrations/versions/0002_add_email.py:14:5  <span class="t-code">AG002</span> <span class="t-warning">warning</span>  Creating index "ix_users_email" on "users" blocks writes until it is built.
+migrations/versions/0002_add_email.py:15:5  <span class="t-code">AG004</span> <span class="t-error">error</span>  Renaming "users.name" to "full_name" breaks code still using the old name.
+migrations/versions/0002_add_email.py:16:5  <span class="t-code">AG008</span> <span class="t-warning">warning</span>  Foreign key from "orders" to "users" is validated while blocking writes on both tables.
+Found 2 errors and 2 warnings in 3 migrations.</code></pre>
+</figure>
+          </li>
+        </ol>
+        <p class="blog-empty" hidden>No posts in this category yet.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="blog/feed.xml">RSS</a>
+          <a href="index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="blog.js"></script>
+    <script type="module" src="home.js"></script>
+  </body>
+</html>
