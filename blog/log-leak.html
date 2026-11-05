@@ -177,8 +177,8 @@ pytest
 <pre class="term"><code>=================================== log-leak ===================================
 app/auth.py:7  <span class="t-code">LL006</span> credential  A value under a key like password, secret or token was logged.
     in login(), logger 'app.auth' at WARNING
-    message: login <span class="t-failed">failed</span> for {'username': 'amal', 'password': '&lt;credential&gt;'}
-    template: login <span class="t-failed">failed</span> for %s
+    message: login failed for {'username': 'amal', 'password': '&lt;credential&gt;'}
+    template: login failed for %s
     first seen in: test_app.py::test_login
     fix: Log only the fields you need, or mask sensitive keys before logging.
 app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known format was logged.
@@ -244,9 +244,9 @@ to hear what it found, and especially any false positives. Issues are welcome on
               <span class="kind">Newer</span>
               <span class="pager-title">The warnings you scroll past are your next upgrade outage</span>
             </a>
-            <a class="pager-card is-older" href="alembic-guard.html">
+            <a class="pager-card is-older" href="payhere-sim.html">
               <span class="kind">Older</span>
-              <span class="pager-title">5 Alembic migrations that will take down your prod DB</span>
+              <span class="pager-title">A PayHere handler can check the signature and still give away 500 credits</span>
             </a>
           </nav>
           <div class="post-cta">

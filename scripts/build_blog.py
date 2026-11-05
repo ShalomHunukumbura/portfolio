@@ -71,7 +71,10 @@ def slugify(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
-SEVERITY = re.compile(r"(?<![\w-])(error|warning|note|FAILED|PASSED|passed|failed)(?![\w-])")
+SEVERITY = re.compile(r"(?<![\w-])(error|warning|note|FAILED|PASSED)(?![\w-])")
+# Lowercase "passed"/"failed" only in counts like "5 failed", not in a check's name.
+COUNT = re.compile(r"\b(\d+) (passed|failed)\b")
+MARK = re.compile(r"^(\s*)(✓|✗)")
 RULE_CODE = re.compile(r"\b([A-Z]{2,3}\d{3})\b")
 
 
@@ -80,6 +83,8 @@ def highlight(line: str) -> str:
     if line.startswith("$ "):
         return f'<span class="t-cmd">{line}</span>'
     line = RULE_CODE.sub(r'<span class="t-code">\1</span>', line)
+    line = COUNT.sub(lambda m: f'{m.group(1)} <span class="t-{m.group(2)}">{m.group(2)}</span>', line)
+    line = MARK.sub(lambda m: m.group(1) + f'<span class="t-{"passed" if m.group(2) == "✓" else "failed"}">{m.group(2)}</span>', line)
     return SEVERITY.sub(lambda m: f'<span class="t-{m.group(1).lower()}">{m.group(1)}</span>', line)
 
 

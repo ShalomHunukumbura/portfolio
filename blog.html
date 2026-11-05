@@ -54,10 +54,15 @@
           One post for every project I ship: the problem it solves, how it works, and what it
           found when I pointed it at real code.
         </p>
-        <p class="log-totals">4 posts on 4 projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
+        <p class="log-totals">6 posts on 6 projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
       </section>
 
       <section class="wrap blog-section" aria-label="Posts">
+        <div class="blog-filters" role="group" aria-label="Show posts about">
+          <button type="button" class="chip" data-filter="all" aria-pressed="true">All <span>6</span></button>
+          <button type="button" class="chip" data-filter="developer-tools" aria-pressed="false">Developer tools <span>4</span></button>
+          <button type="button" class="chip" data-filter="tax-and-payments" aria-pressed="false">Tax and payments <span>2</span></button>
+        </div>
 
         <ol class="post-list" reversed>
           <li class="post-card is-featured" data-category="developer-tools" data-reveal>
@@ -119,10 +124,53 @@ Found 3 errors and 1 <span class="t-warning">warning</span> in 3 files.</code></
   <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ pytest</code></figcaption>
   <pre class="proof-body"><code>app/auth.py:7  <span class="t-code">LL006</span> credential  A value under a key like password, secret or token was logged.
     in login(), logger 'app.auth' at WARNING
-    message: login <span class="t-failed">failed</span> for {'username': 'amal', 'password': '&lt;credential&gt;'}
-    template: login <span class="t-failed">failed</span> for %s
+    message: login failed for {'username': 'amal', 'password': '&lt;credential&gt;'}
+    template: login failed for %s
     first seen in: test_app.py::test_login
 app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known format was logged.</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="tax-and-payments" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Tax and payments</span>
+                <time datetime="2026-10-05">5 Oct 2026</time>
+                <span>5 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/payhere-sim.html">A PayHere handler can check the signature and still give away 500 credits</a></h2>
+              <p class="post-dek">PayHere tells your server about payments by POSTing to a URL you can&#39;t test on localhost. The bugs that cost money are on the paths you never click through. payhere-sim sends them all, signed, to your machine.</p>
+              <p class="post-project"><strong>payhere-sim</strong> CLI and Python library</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ payhere-sim check http://localhost:8000/payhere/notify</code></figcaption>
+  <pre class="proof-body"><code>payhere-sim check → http://localhost:8000/payhere/notify
+
+  <span class="t-passed">✓</span> ignores a notification with a forged signature
+  <span class="t-failed">✗</span> ignores a signed success for less than the order total
+      state changed: credits: 0 → 100; status: unpaid → paid
+  <span class="t-failed">✗</span> ignores a signed success in the wrong currency</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="tax-and-payments" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Tax and payments</span>
+                <time datetime="2026-10-01">1 Oct 2026</time>
+                <span>5 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/lk-tax.html">I checked my tax library against all 75,590 rows of the official tables</a></h2>
+              <p class="post-dek">Sri Lanka&#39;s tax rules change mid-year, so lk-tax stores every rule as dated data with its source. Then I tested it against every row of the Inland Revenue&#39;s own tables, and found two rows that break the table&#39;s own rule.</p>
+              <p class="post-project"><strong>lk-tax</strong> Python package and web calculator</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ pytest tests/test_apit_official_tables.py</code></figcaption>
+  <pre class="proof-body"><code>tests/test_apit_official_tables.py::test_every_row_of_the_official_table[apit_table01_2324.csv.gz-2024-06-30-309150-37794] <span class="t-passed">PASSED</span> [ 20%]
+tests/test_apit_official_tables.py::test_every_row_of_the_official_table[apit_table01_2526.csv.gz-2026-09-30-366100-37796] <span class="t-passed">PASSED</span> [ 40%]
+tests/test_apit_official_tables.py::test_above_the_table_is_last_row_plus_36_percent[apit_table01_2324.csv.gz-2024-06-30-309150-37794] <span class="t-passed">PASSED</span> [ 60%]
+tests/test_apit_official_tables.py::test_above_the_table_is_last_row_plus_36_percent[apit_table01_2526.csv.gz-2026-09-30-366100-37796] <span class="t-passed">PASSED</span> [ 80%]
+tests/test_apit_official_tables.py::test_ird_table_quirk_at_275000_is_reproduced <span class="t-passed">PASSED</span> [100%]</code></pre>
 </figure>
           </li>
           <li class="post-card" data-category="developer-tools" data-reveal>

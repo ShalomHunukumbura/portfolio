@@ -26,6 +26,20 @@
     <description>Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings.</description>
   </item>
   <item>
+    <title>A PayHere handler can check the signature and still give away 500 credits</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/payhere-sim.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/payhere-sim.html</guid>
+    <pubDate>Mon, 05 Oct 2026 00:00:00 +0000</pubDate>
+    <description>PayHere tells your server about payments by POSTing to a URL you can&#x27;t test on localhost. The bugs that cost money are on the paths you never click through. payhere-sim sends them all, signed, to your machine.</description>
+  </item>
+  <item>
+    <title>I checked my tax library against all 75,590 rows of the official tables</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/lk-tax.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/lk-tax.html</guid>
+    <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+    <description>Sri Lanka&#x27;s tax rules change mid-year, so lk-tax stores every rule as dated data with its source. Then I tested it against every row of the Inland Revenue&#x27;s own tables, and found two rows that break the table&#x27;s own rule.</description>
+  </item>
+  <item>
     <title>5 Alembic migrations that will take down your prod DB</title>
     <link>https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html</link>
     <guid>https://shalomhunukumbura.github.io/portfolio/blog/alembic-guard.html</guid>

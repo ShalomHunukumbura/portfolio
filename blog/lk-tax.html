@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>I checked my tax library against all 75,590 rows of the official tables | Shalom Hunukumbura</title>
+    <meta name="description" content="Sri Lanka&#39;s tax rules change mid-year, so lk-tax stores every rule as dated data with its source. Then I tested it against every row of the Inland Revenue&#39;s own tables, and found two rows that break the table&#39;s own rule." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="I checked my tax library against all 75,590 rows of the official tables" />
+    <meta property="og:description" content="Sri Lanka&#39;s tax rules change mid-year, so lk-tax stores every rule as dated data with its source. Then I tested it against every row of the Inland Revenue&#39;s own tables, and found two rows that break the table&#39;s own rule." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/lk-tax.html" />
+    <meta property="article:published_time" content="2026-10-01" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/lk-tax.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Tax and payments</span>
+            <time datetime="2026-10-01">1 Oct 2026</time>
+            <span>5 min read</span>
+          </p>
+          <h1>I checked my tax library against all 75,590 rows of the official tables</h1>
+          <p class="post-lead">Sri Lanka&#39;s tax rules change mid-year, so lk-tax stores every rule as dated data with its source. Then I tested it against every row of the Inland Revenue&#39;s own tables, and found two rows that break the table&#39;s own rule.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">lk-tax <span>Python package and web calculator</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://shalomhunukumbura.github.io/lk-tax/" target="_blank" rel="noopener noreferrer">Calculator <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/lk-tax" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/lk-tax/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#the-rules-are-data-not-code">The rules are data, not code</a></li>
+              <li><a href="#testing-against-the-source">Testing against the source</a></li>
+              <li><a href="#the-table-doesnt-round-the-way-youd-think">The table doesn’t round the way you’d think</a></li>
+              <li><a href="#two-rows-where-the-table-breaks-its-own-rule">Two rows where the table breaks its own rule</a></li>
+              <li><a href="#it-runs-in-the-browser-with-nothing-sent-anywhere">It runs in the browser, with nothing sent anywhere</a></li>
+              <li><a href="#what-id-tell-anyone-writing-tax-code">What I’d tell anyone writing tax code</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Most payroll code I&rsquo;ve seen has a line like this somewhere:</p>
+<pre><code class="language-python">MONTHLY_RELIEF = 150_000
+</code></pre>
+<p>It&rsquo;s correct today. It was wrong for every month before April 2025, when the relief was
+Rs. 100,000, so any report, correction or recalculation for an earlier month comes out
+wrong. And it&rsquo;ll be wrong again the next time the law changes, which in Sri Lanka is often,
+and usually mid-year. In 2026 alone the SSCL registration threshold dropped, VAT on
+financial services went to 20.5%, VAT on foreign digital services started, and more
+professions came under withholding tax.</p>
+<p>So <a href="https://github.com/ShalomHunukumbura/lk-tax" target="_blank" rel="noopener noreferrer">lk-tax</a> doesn&rsquo;t have a &ldquo;current rate&rdquo;. It
+asks what date you mean:</p>
+<pre><code class="language-python">&gt;&gt;&gt; import lk_tax
+&gt;&gt;&gt; lk_tax.apit_monthly(350_000, on=&quot;2026-09-30&quot;).tax
+Decimal('32500.00')
+&gt;&gt;&gt; lk_tax.apit_monthly(350_000, on=&quot;2025-03-31&quot;).tax     # the old rates
+Decimal('52500.00')
+</code></pre>
+<p>Same salary, Rs. 20,000 a month apart, because the second date is before the April 2025
+change. Every answer also carries the rule it used, the dates that rule was in force, and
+the Inland Revenue Department notice it came from.</p>
+<h2 id="the-rules-are-data-not-code">The rules are data, not code</h2>
+<p>Each tax lives in a TOML file, and a change in the law is a new version, never an edit:</p>
+<pre><code class="language-toml">[[versions]]
+effective_from = 2026-07-01
+note = &quot;SSCL (Amendment) Act No. 10 of 2026.&quot;
+rate = 0.025
+quarter_threshold = 9_000_000
+annual_threshold = 36_000_000
+sources = [
+    { title = &quot;Notice PN/SSCL/2026-04/1: SSCL (Amendment) Act No. 10 of 2026&quot;, url = &quot;https://www.ird.gov.lk/...&quot; },
+]
+</code></pre>
+<p>Tests hold the files to three rules: versions are in date order, the first one starts at
+the coverage date (1 January 2023), and every version cites an <code>ird.gov.lk</code> source. A rule
+without a source fails the tests.</p>
+<p>It covers APIT (the monthly tax employers deduct from salaries), personal income tax,
+withholding tax on 11 kinds of payment, VAT and SSCL. The details are where the bugs live,
+so they&rsquo;re in the data too: WHT on service fees applies only once a month&rsquo;s payments to one
+person pass Rs. 100,000, and then to the whole amount, not just the excess. If the payer
+covers the WHT, the invoice is grossed up. WHT is worked out on the amount before VAT. And
+money is <code>Decimal</code> all the way through, so <code>200_000.10</code> never quietly becomes
+<code>200000.0999…</code>.</p>
+<h2 id="testing-against-the-source">Testing against the source</h2>
+<p>Unit tests with numbers I worked out by hand would only prove that the code agrees with me.
+The real authority is the IRD&rsquo;s APIT Tax Table No. 01: a 280-page PDF of income ranges and
+the tax to deduct for each, which is what employers are told to use.</p>
+<p>So I extracted every row of the 2023/24 and 2025/26 tables into fixtures and test lk-tax
+against both ends of every range:</p>
+<pre class="term"><code><span class="t-cmd">$ pytest tests/test_apit_official_tables.py</span>
+tests/test_apit_official_tables.py::test_every_row_of_the_official_table[apit_table01_2324.csv.gz-2024-06-30-309150-37794] <span class="t-passed">PASSED</span> [ 20%]
+tests/test_apit_official_tables.py::test_every_row_of_the_official_table[apit_table01_2526.csv.gz-2026-09-30-366100-37796] <span class="t-passed">PASSED</span> [ 40%]
+tests/test_apit_official_tables.py::test_above_the_table_is_last_row_plus_36_percent[apit_table01_2324.csv.gz-2024-06-30-309150-37794] <span class="t-passed">PASSED</span> [ 60%]
+tests/test_apit_official_tables.py::test_above_the_table_is_last_row_plus_36_percent[apit_table01_2526.csv.gz-2026-09-30-366100-37796] <span class="t-passed">PASSED</span> [ 80%]
+tests/test_apit_official_tables.py::test_ird_table_quirk_at_275000_is_reproduced <span class="t-passed">PASSED</span> [100%]
+============================== 5 <span class="t-passed">passed</span> in 12.60s ==============================</code></pre>
+<p>That&rsquo;s 37,794 rows from one table and 37,796 from the other: 75,590 rows, every one
+matched exactly. Getting there took two discoveries.</p>
+<h2 id="the-table-doesnt-round-the-way-youd-think">The table doesn&rsquo;t round the way you&rsquo;d think</h2>
+<p>The obvious way to get whole rupees from the tax formula is to round to the nearest rupee.
+I measured it against the tables: that gets <strong>75,247 of the 151,180 range ends wrong</strong>,
+about half of them.</p>
+<p>The table is a staircase of whole rupees, and working back from the rows, each step comes
+from a slightly different rule: for an income <em>m</em>, take the formula at <em>m</em> − 0.5 and round
+up. It sounds like a detail. On a salary it&rsquo;s at most a rupee. But a library that&rsquo;s off by
+a rupee on half the table can&rsquo;t say it matches the official table, and an employer
+comparing its output with the PDF finds the difference on the first payslip.</p>
+<h2 id="two-rows-where-the-table-breaks-its-own-rule">Two rows where the table breaks its own rule</h2>
+<p>With that rule, every row matched except two. For salaries of <strong>Rs. 275,005 and 275,006</strong>,
+the 2025/26 table says to deduct Rs. 12,501. By the rule every other row follows, it should
+be Rs. 12,502. The 275,000 mark is where the 18% band ends and the 24% band begins, and
+those two rows were still worked out with the 18% band&rsquo;s formula.</p>
+<p>It&rsquo;s one rupee, on two salaries. But it raised a real design question: when the official
+table and the law disagree, which one does a tax library follow?</p>
+<p>Employers are told to deduct using the table, so lk-tax gives both:</p>
+<pre><code class="language-python">&gt;&gt;&gt; r = lk_tax.apit_monthly(275_005, on=&quot;2025-04-01&quot;)
+&gt;&gt;&gt; r.tax, r.exact_tax
+(Decimal('12501.00'), Decimal('12501.20'))
+</code></pre>
+<p><code>tax</code> reproduces the table exactly, <code>exact_tax</code> is the formula, unrounded, and the two rows
+are recorded as an override in the rule data, with a comment saying why. Nobody has to
+rediscover it.</p>
+<h2 id="it-runs-in-the-browser-with-nothing-sent-anywhere">It runs in the browser, with nothing sent anywhere</h2>
+<p>There&rsquo;s a <a href="https://shalomhunukumbura.github.io/lk-tax/" target="_blank" rel="noopener noreferrer">web calculator</a> for people who don&rsquo;t
+write Python, and it&rsquo;s the same package: <a href="https://pyodide.org" target="_blank" rel="noopener noreferrer">Pyodide</a> runs lk-tax in the
+browser as WebAssembly, so a salary typed into it never leaves the page. GitHub Pages
+rebuilds it on every push to <code>main</code>, and a test checks that the in-browser answers match
+the HTTP API&rsquo;s.</p>
+<pre><code class="language-bash">pip install lk-tax            # the library, no dependencies
+pip install &quot;lk-tax[api]&quot;     # plus the HTTP API and the calculator
+</code></pre>
+<h2 id="what-id-tell-anyone-writing-tax-code">What I&rsquo;d tell anyone writing tax code</h2>
+<ul>
+<li><strong>Ask &ldquo;on what date?&rdquo;</strong> A rate without a date is only right until the next budget.</li>
+<li><strong>Keep the source next to the number.</strong> When someone asks &ldquo;why this amount?&rdquo;, the answer
+  should be a link to the notice, not a search through old commits.</li>
+<li><strong>Test against the authority, not against yourself.</strong> The table found a rounding rule I&rsquo;d
+  have got wrong, and a mistake in the table I&rsquo;d never have guessed.</li>
+</ul>
+<p>lk-tax isn&rsquo;t tax advice, and it doesn&rsquo;t cover everything yet: APIT tables other than No. 01
+(lump sums, secondary employment, leaving mid-year) aren&rsquo;t in it. If you find a rule that&rsquo;s
+wrong, open an issue with the IRD notice, and it becomes a new version with that notice as
+its source.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#finance</span><span>#testing</span><span>#srilanka</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="payhere-sim.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">A PayHere handler can check the signature and still give away 500 credits</span>
+            </a>
+            <a class="pager-card is-older" href="alembic-guard.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">5 Alembic migrations that will take down your prod DB</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>
