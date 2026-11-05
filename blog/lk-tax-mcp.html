@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>Designing tools for a user that&#39;s a language model | Shalom Hunukumbura</title>
+    <meta name="description" content="lk-tax-mcp gives Claude and other AI assistants exact, sourced Sri Lankan tax calculations instead of rates recalled from memory. Most of the work went into the parts a model reads: descriptions, choices and error messages." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Designing tools for a user that&#39;s a language model" />
+    <meta property="og:description" content="lk-tax-mcp gives Claude and other AI assistants exact, sourced Sri Lankan tax calculations instead of rates recalled from memory. Most of the work went into the parts a model reads: descriptions, choices and error messages." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/lk-tax-mcp.html" />
+    <meta property="article:published_time" content="2026-10-05" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/lk-tax-mcp.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>AI engineering</span>
+            <time datetime="2026-10-05">5 Oct 2026</time>
+            <span>5 min read</span>
+          </p>
+          <h1>Designing tools for a user that&#39;s a language model</h1>
+          <p class="post-lead">lk-tax-mcp gives Claude and other AI assistants exact, sourced Sri Lankan tax calculations instead of rates recalled from memory. Most of the work went into the parts a model reads: descriptions, choices and error messages.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">lk-tax-mcp <span>MCP server</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/lk-tax-mcp" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/lk-tax-mcp/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#what-the-model-gets-back">What the model gets back</a></li>
+              <li><a href="#the-user-is-a-model">The user is a model</a></li>
+              <li><a href="#safe-to-call-without-asking">Safe to call without asking</a></li>
+              <li><a href="#what-id-tell-anyone-writing-tools-for-models">What I’d tell anyone writing tools for models</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Ask a language model how much tax is deducted from a Sri Lankan salary and it answers
+straight away, confidently, with rates from whenever its training data was written. Sri
+Lanka rebuilt its salary tax bands in April 2025, and in 2026 alone the SSCL threshold
+dropped, VAT on financial services rose and withholding tax reached more professions. A
+model recalling &ldquo;the rate&rdquo; is right for some dates, wrong for others, and can&rsquo;t show where
+any number came from.</p>
+<p><a href="https://github.com/ShalomHunukumbura/lk-tax-mcp" target="_blank" rel="noopener noreferrer">lk-tax-mcp</a> fixes that by not asking
+the model to know anything. It&rsquo;s an <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">MCP</a> server: a set of
+tools an assistant like Claude can call. The arithmetic and the rules come from
+<a href="lk-tax.html">lk-tax</a>, my tax library that matches every row of the official tables.
+The model only has to pick the right tool and pass the right numbers.</p>
+<pre><code class="language-bash">claude mcp add lk-tax -- uvx lk-tax-mcp
+</code></pre>
+<h2 id="what-the-model-gets-back">What the model gets back</h2>
+<p>Here&rsquo;s one call, made through an MCP client the way an assistant makes it:</p>
+<pre class="term"><code><span class="t-cmd">$ calculate_salary_tax(monthly_income=350000, pay_date=&quot;2026-09-30&quot;)</span>
+APIT on a monthly income of Rs. 350,000.00 paid on 2026-09-30 is Rs. 32,500.00.
+The first Rs. 150,000.00 a month is tax-free. Rule in force from 2025-04-01 and
+still in force; source: Notice PN/IT/2025-01: revision of income tax rates from 01.04.2025.</code></pre>
+<p>That&rsquo;s the <code>summary</code> field. Next to it are the exact amounts as decimal strings, the bands,
+and the rule version with its dates and Inland Revenue sources. I put the one-sentence
+summary first because that&rsquo;s what a model quotes. If the sentence already says the date,
+the rule and the source, the answer the user sees usually does too.</p>
+<p>In a real Claude Code session with only this server connected, a question about a Rs.
+350,000 salary &ldquo;this month and before the April 2025 change&rdquo; made Claude call the tool
+twice, once per date, and answer Rs. 32,500 and Rs. 52,500, each with its IRD notice.</p>
+<h2 id="the-user-is-a-model">The user is a model</h2>
+<p>Every tool in the server is a few lines that call lk-tax. The work was in everything around
+those lines, because the person reading the interface isn&rsquo;t a person. A model reads the
+tool&rsquo;s description, the description of each parameter and the error messages, then decides
+what to do. Each of those is a prompt, and each was written for that reader.</p>
+<p><strong>Dates are explicit.</strong> Every calculation takes the date it applies to, the pay date or the
+invoice date, with today as the default. &ldquo;What was it last year?&rdquo; gets last year&rsquo;s rules.
+A model can&rsquo;t get that from a tool that only knows &ldquo;the current rate&rdquo;.</p>
+<p><strong>Choices are enumerated.</strong> Withholding tax has 11 payment types, and each one is an enum
+value in the schema with its own description:</p>
+<pre><code class="language-text">service_fee: fees to a resident individual who isn't an employee (teaching, commissions,
+independent professionals). interest: interest or discount. rent_resident: rent to a
+resident. dividend. winnings: lottery, betting or gambling. ...
+</code></pre>
+<p>The model doesn&rsquo;t have to guess that &ldquo;consulting fee&rdquo; means <code>service_fee</code>. If it invents a
+type anyway, the call is rejected with the list of valid ones.</p>
+<p><strong>Errors say what to fix.</strong> These are the real messages the model sees:</p>
+<pre class="term"><code>monthly_income=&quot;three lakhs&quot;   →  monthly_income must be a number, got 'three lakhs'
+pay_date=&quot;2022-06-30&quot;          →  Not covered: lk-tax covers 2023-01-01 onwards, not 2022-06-30.</code></pre>
+<p>A model that gets &ldquo;Error&rdquo; tries again with the same input, or gives up and guesses. A model
+that gets &ldquo;must be a number&rdquo; converts &ldquo;three lakhs&rdquo; to 300000. One that gets &ldquo;Not covered&rdquo;
+tells the user the date is outside what the server knows, which is the right answer.</p>
+<p>There&rsquo;s a detail in how that works. The MCP SDK hides the text of unexpected exceptions
+from the model, on purpose: a stack trace can leak internals. So the server turns lk-tax&rsquo;s
+input errors, and only those, into <code>ToolError</code>, the one exception whose message the model
+sees. Anything else is a bug, and stays hidden.</p>
+<p><strong>It says what it doesn&rsquo;t cover.</strong> The server&rsquo;s instructions tell the model the gaps: lump
+sums, bonuses paid once, non-resident employees, deciding whether a supply is VAT-exempt,
+and dates before 2023. They tell it to say so rather than estimate. A tool that only
+describes what it can do invites the model to stretch it.</p>
+<h2 id="safe-to-call-without-asking">Safe to call without asking</h2>
+<p>Every tool is a pure calculation: no network access, no files, no credentials. All nine
+are annotated <code>readOnlyHint</code> and <code>idempotentHint</code>, so a client can let the model call them
+freely, without asking the user each time.</p>
+<p>The tests hold the whole surface to that. Every tool must be read-only, idempotent and not
+destructive. Every tool and every parameter must have a description. And one test starts
+the real <code>lk-tax-mcp</code> command and talks to it over stdio, the way a client would, so a
+packaging mistake fails the tests too. Another checks that the enums list exactly the payment
+types and activities lk-tax knows, so the two can&rsquo;t drift apart. That&rsquo;s 29 tests, all passing.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calculate_salary_tax</code></td>
+<td>APIT on a month&rsquo;s salary, from the official table</td>
+</tr>
+<tr>
+<td><code>calculate_annual_income_tax</code></td>
+<td>Income tax for a year, with the bands</td>
+</tr>
+<tr>
+<td><code>calculate_withholding_tax</code></td>
+<td>WHT on 11 payment types, with thresholds and grossing up</td>
+</tr>
+<tr>
+<td><code>calculate_vat</code>, <code>check_vat_registration</code></td>
+<td>VAT on a price, and whether a business must register</td>
+</tr>
+<tr>
+<td><code>calculate_sscl</code>, <code>check_sscl_registration</code></td>
+<td>SSCL on turnover, and the registration test</td>
+</tr>
+<tr>
+<td><code>get_tax_rules</code>, <code>get_rule_history</code></td>
+<td>The rules on a date, and every change since 2023</td>
+</tr>
+</tbody>
+</table></div>
+<p>It&rsquo;s on PyPI and listed in the official MCP Registry, so <code>uvx lk-tax-mcp</code> is the whole
+install.</p>
+<h2 id="what-id-tell-anyone-writing-tools-for-models">What I&rsquo;d tell anyone writing tools for models</h2>
+<ul>
+<li><strong>Write descriptions for the reader you have.</strong> Every string the model sees is part of
+  the prompt, so it needs the care a prompt gets.</li>
+<li><strong>Make errors actionable.</strong> The model will act on them. Give it something to act on.</li>
+<li><strong>Put the source in the answer.</strong> If the result carries its rule and its notice, the model
+  passes them on, and the user can check the number.</li>
+</ul>
+<p>It isn&rsquo;t tax advice. Every figure it returns links to the IRD document it came from, so
+anyone can check it.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#mcp</span><span>#llm</span><span>#tax</span><span>#srilanka</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="unlisted.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">Every job on 10,000 career pages, in a 500 MB free database</span>
+            </a>
+            <a class="pager-card is-older" href="payhere-sim.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">A PayHere handler can check the signature and still give away 500 credits</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

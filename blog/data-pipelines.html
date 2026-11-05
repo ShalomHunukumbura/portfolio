@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>Four data pipelines, and the rule that kept every one of them honest | Shalom Hunukumbura</title>
+    <meta name="description" content="Exchange rates, job postings, rainfall and food prices, each from a source that wasn&#39;t built to be read by a program. Four stacks, from plain Python to dbt, Airflow and Delta Lake, and the same lessons each time." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Four data pipelines, and the rule that kept every one of them honest" />
+    <meta property="og:description" content="Exchange rates, job postings, rainfall and food prices, each from a source that wasn&#39;t built to be read by a program. Four stacks, from plain Python to dbt, Airflow and Delta Lake, and the same lessons each time." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/data-pipelines.html" />
+    <meta property="article:published_time" content="2026-10-30" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/data-pipelines.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Data engineering</span>
+            <time datetime="2026-10-30">30 Oct 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>Four data pipelines, and the rule that kept every one of them honest</h1>
+          <p class="post-lead">Exchange rates, job postings, rainfall and food prices, each from a source that wasn&#39;t built to be read by a program. Four stacks, from plain Python to dbt, Airflow and Delta Lake, and the same lessons each time.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">Four data pipelines <span>Python, dbt, Airflow, Delta Lake</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://shalomhunukumbura.github.io/lkr-rates/" target="_blank" rel="noopener noreferrer">lkr-rates <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://shalomhunukumbura.github.io/hiring-warehouse/" target="_blank" rel="noopener noreferrer">hiring-warehouse <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://shalomhunukumbura.github.io/rain-watch/" target="_blank" rel="noopener noreferrer">rain-watch <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://shalomhunukumbura.github.io/lk-prices/" target="_blank" rel="noopener noreferrer">lk-prices <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#keep-the-source-exactly-as-it-arrived">Keep the source exactly as it arrived</a></li>
+              <li><a href="#load-twice-change-nothing">Load twice, change nothing</a></li>
+              <li><a href="#the-checks-decide-what-gets-published">The checks decide what gets published</a></li>
+              <li><a href="#wrong-data-at-the-source-goes-in-quarantine">Wrong data at the source goes in quarantine</a></li>
+              <li><a href="#parse-whats-on-the-page-not-what-you-expect">Parse what’s on the page, not what you expect</a></li>
+              <li><a href="#ask-first-then-go-slowly">Ask first, then go slowly</a></li>
+              <li><a href="#what-i-took-from-all-four">What I took from all four</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Over October I built four data pipelines, each over a source that publishes useful numbers
+in a form that&rsquo;s hard to use:</p>
+<ul>
+<li><strong><a href="https://github.com/ShalomHunukumbura/lkr-rates" target="_blank" rel="noopener noreferrer">lkr-rates</a>:</strong> every rupee exchange
+  rate the Central Bank of Sri Lanka has published since 2010, from a web form that returns
+  HTML tables. Plain Python, Parquet, a static page.</li>
+<li><strong><a href="https://github.com/ShalomHunukumbura/hiring-warehouse" target="_blank" rel="noopener noreferrer">hiring-warehouse</a>:</strong> a star
+  schema in dbt over the job postings <a href="unlisted.html">Unlisted</a> collects, so the history
+  survives after Unlisted deletes old jobs.</li>
+<li><strong><a href="https://github.com/ShalomHunukumbura/rain-watch" target="_blank" rel="noopener noreferrer">rain-watch</a>:</strong> rainfall for all 25
+  districts every morning, compared with the same week in every year since 2015, with phone
+  alerts. Apache Airflow over an S3-compatible data lake.</li>
+<li><strong><a href="https://github.com/ShalomHunukumbura/lk-prices" target="_blank" rel="noopener noreferrer">lk-prices</a>:</strong> ten years of food prices
+  from about 2,450 Central Bank PDFs, turned into Delta Lake tables and a monthly food price
+  index. Polars and delta-rs, no Spark.</li>
+</ul>
+<p>They&rsquo;re four different stacks on purpose: I wanted to learn each tool on a real source
+rather than a tutorial dataset. But the problems that mattered weren&rsquo;t the tools. They were
+the same in every project.</p>
+<h2 id="keep-the-source-exactly-as-it-arrived">Keep the source exactly as it arrived</h2>
+<p>Every pipeline saves what the source sent, untouched, before parsing anything: lkr-rates
+keeps the raw HTML pages, rain-watch the raw API responses in the lake, lk-prices the PDFs
+as served. Parsing happens after, from those files.</p>
+<p>That&rsquo;s what makes every parser bug cheap. When lk-prices&rsquo; parser changed, <code>lk-prices
+rebuild</code> re-parsed all ten years from the saved PDFs, without asking the Central Bank for
+any of them again, and the previous table stayed readable through Delta Lake&rsquo;s time travel.
+lkr-rates has the same command. A pipeline that parses as it downloads can only fix old
+data by downloading it all again, and some sources don&rsquo;t let you.</p>
+<h2 id="load-twice-change-nothing">Load twice, change nothing</h2>
+<p>A daily job will run twice someday: a retry, a timer that fires late, me running it by hand.
+So every load is idempotent. lkr-rates merges rows keyed by date, currency and rate type.
+lk-prices loads with a Delta <code>MERGE</code>. rain-watch writes one Parquet file per day and
+replaces it on a rerun, so a single past day can be rerun on its own. Run any of them twice
+and the second run changes nothing.</p>
+<p>hiring-warehouse goes further: dbt rebuilds every table from all the saved extracts, from an
+empty database, on every run. That&rsquo;s also why its job history is built from the extracts
+with window functions instead of dbt snapshots. Snapshots keep history only inside the
+database, so they can&rsquo;t be rebuilt.</p>
+<h2 id="the-checks-decide-what-gets-published">The checks decide what gets published</h2>
+<p>This is the rule from the title. Each pipeline has a quality gate between loading and
+publishing, and if a check fails, the run stops and nothing is published. Yesterday&rsquo;s page
+is better than a wrong one. Here are lkr-rates&rsquo; checks, run today:</p>
+<pre class="term"><code><span class="t-cmd">$ lkr-rates check</span>
+  ok       rates are positive
+  ok       codes and types are valid
+  ok       no dates in the future
+  ok       buy is below sell
+  ok       data is fresh
+  ok       no long gaps in USD
+  ok       nothing quarantined recently
+  <span class="t-warning">warning</span>  no wild one-day moves: 21 row(s)
+           why it matters: a move of more than 20% in a day is rare; check it is real
+           2024-03-07, EGP, indicative, 9.966600, 6.212300
+           2023-06-15, NGN, indicative, 0.655000, 0.497400
+           2022-03-04, RUB, indicative, 2.741700, 1.833000
+  ok       newest day has every currency</code></pre>
+<p>The difference between <code>ok</code>, <code>warning</code> and a failure is a design decision. A buy rate above
+the sell rate can&rsquo;t be right, so that one fails. A move of more than 20% in a day is usually a
+mistake, but not always: those rows are Egypt&rsquo;s devaluation in March 2024, Nigeria floating the naira
+in June 2023, and the rouble in March 2022. They&rsquo;re real, so they warn, and a person looks.</p>
+<p>rain-watch&rsquo;s gate checks every district and day is present, rain is between 0 and 1,000 mm,
+and the districts aren&rsquo;t all identical, which is what a broken upstream response tends to
+look like. lk-prices rejects a report with too few prices, duplicate rows, or retail prices
+below half of wholesale, the sign of a misread column. hiring-warehouse has a dbt test on
+every model, including &ldquo;every job has exactly one current version&rdquo;.</p>
+<h2 id="wrong-data-at-the-source-goes-in-quarantine">Wrong data at the source goes in quarantine</h2>
+<p>Sometimes the source itself is wrong. The Central Bank published a yen sell rate of
+2,785.9084 rupees on 25 March 2011. Leaving it in breaks every chart; deleting it hides that
+the source said it. So lkr-rates moves the 26 rates like that into <code>quarantine.csv</code>, with
+the reason, and leaves them out of the main table.</p>
+<p>lk-prices does the same at a finer grain. It keeps every price as printed, then flags the
+ones the index shouldn&rsquo;t trust, like coconut oil at Rs 570, then 85, then 570 again: a
+typing slip. It found nine in ten years. It also uses the source to check itself: each
+report repeats the previous report&rsquo;s prices in a &ldquo;Yesterday&rdquo; column, and 99.73% of 243,686
+of them agree with what the parser read the day before. That&rsquo;s a check on the parser as
+much as on the Central Bank.</p>
+<h2 id="parse-whats-on-the-page-not-what-you-expect">Parse what&rsquo;s on the page, not what you expect</h2>
+<p>The PDFs were the hardest source. lk-prices handles three layouts the Central Bank has used
+since 2016, and a PDF that matches none of them is an error, never a guess. It reads the
+price table by position, not as text, because a blank cell in plain text slides every
+number after it into the wrong market. Reports before June 2017 print no year at all, only
+&ldquo;12-Aug&rdquo;, so the year is the one that puts that day nearest the listing date. And the dates
+come from inside each PDF, because the listing&rsquo;s dates are wrong for a few dozen reports.</p>
+<p>The result is a food price index from nothing but the Central Bank&rsquo;s market prices. It
+stood at 322 in October 2026 (August 2016 = 100). From October 2021 to October 2022 it rose
+88%, which falls between the official food inflation figures for September 2022: 85.8% on
+the national index, 94.9% in Colombo. Landing between two official numbers is good evidence
+the method is sound.</p>
+<h2 id="ask-first-then-go-slowly">Ask first, then go slowly</h2>
+<p>Before scraping anything, I read the terms, not just <code>robots.txt</code>. The Central Bank&rsquo;s site
+says &ldquo;All Rights Reserved&rdquo; and offers no reuse licence, so lk-prices publishes derived
+figures only (the index, monthly medians, margins) and links to the original PDFs instead of
+republishing the tables. Supermarket sites I looked at forbid redistribution outright, so
+they&rsquo;re not in it. Open-Meteo&rsquo;s data is CC BY 4.0, and rain-watch&rsquo;s page credits it.</p>
+<p><code>cbsl.gov.lk/robots.txt</code> asks for 10 seconds between requests, so lk-prices waits 10
+seconds between every request, and the first full download took about eight hours. The
+Central Bank also blocks GitHub&rsquo;s servers, which means lkr-rates and lk-prices can&rsquo;t update
+from GitHub Actions. They run on a systemd timer on an ordinary machine instead, and push
+the results to GitHub, which publishes the pages.</p>
+<h2 id="what-i-took-from-all-four">What I took from all four</h2>
+<ul>
+<li><strong>Raw first.</strong> Saving the source untouched turns every parser bug into a rebuild instead of
+  a re-download.</li>
+<li><strong>Idempotent loads.</strong> A job that&rsquo;s safe to run twice is a job you can rerun without
+  thinking.</li>
+<li><strong>A gate before publishing.</strong> Stale is better than wrong, and the checks are where you
+  decide which mistakes are impossible and which are just unusual.</li>
+<li><strong>Read the terms.</strong> What you&rsquo;re allowed to publish shapes the product as much as what you
+  can parse.</li>
+</ul>
+<p>All four are tested (205 tests between them) and update on their own: lkr-rates, rain-watch
+and lk-prices from timers, hiring-warehouse from GitHub Actions. Their pages are linked at
+the top.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#data-engineering</span><span>#dbt</span><span>#airflow</span><span>#delta-lake</span><span>#srilanka</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="no-hang.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">The one-line bug that takes your whole site down</span>
+            </a>
+            <a class="pager-card is-older" href="deprecation-radar.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">The warnings you scroll past are your next upgrade outage</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

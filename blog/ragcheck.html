@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>The pull request that broke four answers out of five, and passed review | Shalom Hunukumbura</title>
+    <meta name="description" content="Changes that break a RAG pipeline rarely look dangerous. ragcheck runs yours on questions with known answers and fails CI when the answer, its evidence or the right document stops coming back. No LLM judge, no API key." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The pull request that broke four answers out of five, and passed review" />
+    <meta property="og:description" content="Changes that break a RAG pipeline rarely look dangerous. ragcheck runs yours on questions with known answers and fails CI when the answer, its evidence or the right document stops coming back. No LLM judge, no API key." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/ragcheck.html" />
+    <meta property="article:published_time" content="2026-10-29" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/ragcheck.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>AI engineering</span>
+            <time datetime="2026-10-29">29 Oct 2026</time>
+            <span>4 min read</span>
+          </p>
+          <h1>The pull request that broke four answers out of five, and passed review</h1>
+          <p class="post-lead">Changes that break a RAG pipeline rarely look dangerous. ragcheck runs yours on questions with known answers and fails CI when the answer, its evidence or the right document stops coming back. No LLM judge, no API key.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">ragcheck <span>CLI and GitHub Action</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/ragcheck" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://pypi.org/project/ragcheck-ci/" target="_blank" rel="noopener noreferrer">PyPI <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/ragcheck-demo/pull/1" target="_blank" rel="noopener noreferrer">Demo pull request <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#tests-for-what-the-pipeline-says">Tests for what the pipeline says</a></li>
+              <li><a href="#three-checks-because-rag-fails-in-three-places">Three checks, because RAG fails in three places</a></li>
+              <li><a href="#why-theres-no-llm-judge">Why there’s no LLM judge</a></li>
+              <li><a href="#in-a-pull-request">In a pull request</a></li>
+              <li><a href="#where-it-came-from">Where it came from</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Here&rsquo;s a pull request I&rsquo;d approve. A RAG assistant sends every retrieved document to the
+model, and that costs tokens, so the change keeps only the first sentence of each document.
+Two lines. The diff is obviously correct, the unit tests pass, and retrieval still works.</p>
+<p>The assistant stops answering four questions out of five.</p>
+<p>The answers were in the second and third sentences. Nothing in the diff says so, nothing in
+the tests checks it, and nobody notices until a customer asks how long they have to request
+a refund.</p>
+<h2 id="tests-for-what-the-pipeline-says">Tests for what the pipeline says</h2>
+<p><a href="https://github.com/ShalomHunukumbura/ragcheck" target="_blank" rel="noopener noreferrer">ragcheck</a> is a test for that. You write
+down a few questions your users really ask, with what any correct answer must contain:</p>
+<pre><code class="language-json">{&quot;id&quot;: &quot;refund-window&quot;, &quot;question&quot;: &quot;How long do customers have to request a refund?&quot;, &quot;answer_contains&quot;: [&quot;30 days&quot;], &quot;relevant_doc_ids&quot;: [&quot;policy-refunds&quot;]}
+</code></pre>
+<p>Your pipeline answers each one and writes down what it did: the answer, and the chunks it
+retrieved, in order. ragcheck checks three things for every question, and fails CI when any
+of them drops below its threshold.</p>
+<p>Here&rsquo;s the trimming change, run against the example pipeline in the repo:</p>
+<pre class="term"><code><span class="t-cmd">$ ragcheck-ci --dataset questions.jsonl --predictions predictions.jsonl --k 3</span>
+ragcheck: 5 cases, retrieval cutoff k=3
+
+  Answer pass rate     20.0%  needs 100.0%  below
+  Grounded pass rate   20.0%  needs 100.0%  below
+  Retrieval recall@3   60.0%  needs 100.0%  below
+
+Cases needing attention:
+  refund-window
+    missing answer phrase: &quot;30 days&quot;
+    missing evidence phrase: &quot;30 days&quot;
+  colombo-delivery
+    missing answer phrase: &quot;2 working days&quot;
+    missing evidence phrase: &quot;2 working days&quot;
+    missing relevant docs: shipping-times
+
+RAG checks failed: 3 of 3 metrics below their threshold.</code></pre>
+<p>I&rsquo;ve cut two of the four failing cases to keep it short. Without the change, the same run
+passes all three metrics at 100% and exits 0. With it, the exit code is 1 and the build
+fails. The <a href="https://github.com/ShalomHunukumbura/ragcheck-demo/pull/1" target="_blank" rel="noopener noreferrer">demo pull request</a>
+shows the same change failing its check on a real pull request.</p>
+<h2 id="three-checks-because-rag-fails-in-three-places">Three checks, because RAG fails in three places</h2>
+<ul>
+<li><strong>Answer pass rate.</strong> Does the answer contain every required phrase? This is what the
+  user sees.</li>
+<li><strong>Grounded pass rate.</strong> Does the answer pass, <em>and</em> is every phrase in the retrieved text
+  too? An answer that says &ldquo;30 days&rdquo; when the retrieved chunks don&rsquo;t is guessing, or
+  remembering. It might be right today. It&rsquo;s not grounded, and it&rsquo;ll drift.</li>
+<li><strong>Retrieval recall@k.</strong> Of the documents that should come back, how many are in the top
+  <em>k</em>? This one tells you whether retrieval broke, or generation did.</li>
+</ul>
+<p>Together they point at the broken part. In the output above, <code>refund-window</code> lost its
+answer and its evidence, but not its document: the right document still came back, cut
+short. <code>colombo-delivery</code> lost the document too. Retrieval matches words, and with only
+one sentence left, the shipping page no longer matched the question.</p>
+<h2 id="why-theres-no-llm-judge">Why there&rsquo;s no LLM judge</h2>
+<p>Most RAG evaluation tools ask another model to grade the answers. That&rsquo;s useful when you&rsquo;re
+exploring. It&rsquo;s a poor fit for CI. A model grader costs money on every pull request, needs
+an API key in CI, and can give a different grade to the same answer twice. A check that
+flickers gets ignored, and then it&rsquo;s worse than none.</p>
+<p>ragcheck&rsquo;s checks are phrase matches, case-insensitive, and nothing else. The same inputs
+always give the same result, so when it fails, something in your pipeline changed. It has
+no dependencies beyond Python 3.10, and the 29 tests run in under a second.</p>
+<p>The trade-off is real, and the README says it plainly. A paraphrase fails: &ldquo;one month&rdquo;
+doesn&rsquo;t contain &ldquo;30 days&rdquo;. And a long answer can contain the phrase and still say
+something wrong. So it&rsquo;s a regression signal, not a judge of correctness. The trick is to
+pick phrases any correct answer must contain: numbers, names, the steps of a procedure.
+&ldquo;30 days&rdquo; is a good phrase. &ldquo;Refunds are easy&rdquo; isn&rsquo;t.</p>
+<h2 id="in-a-pull-request">In a pull request</h2>
+<pre><code class="language-yaml">- uses: ShalomHunukumbura/ragcheck@v0
+  with:
+    dataset: eval/questions.jsonl
+    predictions: /tmp/predictions.jsonl
+    command: python eval/run_pipeline.py
+    min-answer-pass-rate: &quot;0.95&quot;
+    min-grounded-pass-rate: &quot;0.95&quot;
+    min-retrieval-recall: &quot;0.90&quot;
+</code></pre>
+<p>The Action runs your pipeline, checks the result, puts the full table in the job summary,
+and marks each metric below its threshold as an error on the pull request. Ten to thirty
+questions covering the answers that matter most is enough to start.</p>
+<h2 id="where-it-came-from">Where it came from</h2>
+<p><a href="docsage.html">DocSage</a>, my RAG project from a month earlier, taught me that its evaluation
+set was the most useful thing in it: every design decision came from it. An eval script
+only helps when someone runs it, though. ragcheck is the part of that idea that belongs in
+CI: small, fast, deterministic, and run on every change, including the ones that look too
+small to matter.</p>
+<pre><code class="language-bash">pip install ragcheck-ci
+</code></pre>
+<p>(<code>ragcheck</code> was taken on PyPI, so the package and the command are <code>ragcheck-ci</code>.)</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#rag</span><span>#llm</span><span>#testing</span><span>#ci</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="log-leak.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">6 ways personal data gets into your Python logs (and how your tests can catch it)</span>
+            </a>
+            <a class="pager-card is-older" href="unlisted.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">Every job on 10,000 career pages, in a 500 MB free database</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>

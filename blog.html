@@ -54,13 +54,14 @@
           One post for every project I ship: the problem it solves, how it works, and what it
           found when I pointed it at real code.
         </p>
-        <p class="log-totals">8 posts on 8 projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
+        <p class="log-totals">11 posts on 11 projects · <a class="inline-link" href="blog/feed.xml">RSS feed</a></p>
       </section>
 
       <section class="wrap blog-section" aria-label="Posts">
         <div class="blog-filters" role="group" aria-label="Show posts about">
-          <button type="button" class="chip" data-filter="all" aria-pressed="true">All <span>8</span></button>
-          <button type="button" class="chip" data-filter="ai-engineering" aria-pressed="false">AI engineering <span>1</span></button>
+          <button type="button" class="chip" data-filter="all" aria-pressed="true">All <span>11</span></button>
+          <button type="button" class="chip" data-filter="ai-engineering" aria-pressed="false">AI engineering <span>3</span></button>
+          <button type="button" class="chip" data-filter="data-engineering" aria-pressed="false">Data engineering <span>1</span></button>
           <button type="button" class="chip" data-filter="developer-tools" aria-pressed="false">Developer tools <span>4</span></button>
           <button type="button" class="chip" data-filter="products" aria-pressed="false">Products <span>1</span></button>
           <button type="button" class="chip" data-filter="tax-and-payments" aria-pressed="false">Tax and payments <span>2</span></button>
@@ -86,6 +87,28 @@ web/db.ts:4:21  <span class="t-code">NH006</span> <span class="t-warning">warnin
 web/db.ts:5:20  <span class="t-code">NH001</span> <span class="t-error">error</span>  axios.create() has no timeout, so every request through this instance waits forever if the server stops answering.
 worker/main.go:6:12  <span class="t-code">NH001</span> <span class="t-error">error</span>  http.Get() uses http.DefaultClient, which has no timeout, so it waits forever if the server stops answering.
 Found 3 errors and 1 <span class="t-warning">warning</span> in 3 files.</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="data-engineering" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>Data engineering</span>
+                <time datetime="2026-10-30">30 Oct 2026</time>
+                <span>6 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/data-pipelines.html">Four data pipelines, and the rule that kept every one of them honest</a></h2>
+              <p class="post-dek">Exchange rates, job postings, rainfall and food prices, each from a source that wasn&#39;t built to be read by a program. Four stacks, from plain Python to dbt, Airflow and Delta Lake, and the same lessons each time.</p>
+              <p class="post-project"><strong>Four data pipelines</strong> Python, dbt, Airflow, Delta Lake</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ lkr-rates check</code></figcaption>
+  <pre class="proof-body"><code>ok       buy is below sell
+ok       data is fresh
+<span class="t-warning">warning</span>  no wild one-day moves: 21 row(s)
+         2024-03-07, EGP, indicative, 9.966600, 6.212300
+         2023-06-15, NGN, indicative, 0.655000, 0.497400
+ok       newest day has every currency</code></pre>
 </figure>
           </li>
           <li class="post-card" data-category="developer-tools" data-reveal>
@@ -132,6 +155,28 @@ Found 3 errors and 1 <span class="t-warning">warning</span> in 3 files.</code></
 app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known format was logged.</code></pre>
 </figure>
           </li>
+          <li class="post-card" data-category="ai-engineering" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>AI engineering</span>
+                <time datetime="2026-10-29">29 Oct 2026</time>
+                <span>4 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/ragcheck.html">The pull request that broke four answers out of five, and passed review</a></h2>
+              <p class="post-dek">Changes that break a RAG pipeline rarely look dangerous. ragcheck runs yours on questions with known answers and fails CI when the answer, its evidence or the right document stops coming back. No LLM judge, no API key.</p>
+              <p class="post-project"><strong>ragcheck</strong> CLI and GitHub Action</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ ragcheck-ci --dataset questions.jsonl ... --k 3</code></figcaption>
+  <pre class="proof-body"><code>ragcheck: 5 cases, retrieval cutoff k=3
+
+  Answer pass rate     20.0%  needs 100.0%  below
+  Grounded pass rate   20.0%  needs 100.0%  below
+  Retrieval recall@3   60.0%  needs 100.0%  below
+</code></pre>
+</figure>
+          </li>
           <li class="post-card" data-category="products" data-reveal>
             <div class="post-card-body">
               <p class="post-meta">
@@ -152,6 +197,25 @@ app/auth.py:11  <span class="t-code">LL003</span> api-key  An API key in a known
 'Argentina - Fully Remote'               -&gt; country
 'Anywhere in Belgium'                    -&gt; country
 'Remote (EMEA)'                          -&gt; region</code></pre>
+</figure>
+          </li>
+          <li class="post-card" data-category="ai-engineering" data-reveal>
+            <div class="post-card-body">
+              <p class="post-meta">
+                <span>AI engineering</span>
+                <time datetime="2026-10-05">5 Oct 2026</time>
+                <span>5 min read</span>
+              </p>
+              <h2 class="post-card-title"><a href="blog/lk-tax-mcp.html">Designing tools for a user that&#39;s a language model</a></h2>
+              <p class="post-dek">lk-tax-mcp gives Claude and other AI assistants exact, sourced Sri Lankan tax calculations instead of rates recalled from memory. Most of the work went into the parts a model reads: descriptions, choices and error messages.</p>
+              <p class="post-project"><strong>lk-tax-mcp</strong> MCP server</p>
+              <span class="post-read" aria-hidden="true">Read the post <span class="arrow">→</span></span>
+            </div>
+<figure class="proof" aria-hidden="true">
+  <figcaption class="proof-bar"><span class="proof-dots"><i></i><i></i><i></i></span><code>$ calculate_salary_tax(350000, &#34;2026-09-30&#34;)</code></figcaption>
+  <pre class="proof-body"><code>APIT on a monthly income of Rs. 350,000.00 paid on 2026-09-30 is Rs. 32,500.00.
+The first Rs. 150,000.00 a month is tax-free. Rule in force from 2025-04-01 and
+still in force; source: Notice PN/IT/2025-01: revision of income tax rates from 01.04.2025.</code></pre>
 </figure>
           </li>
           <li class="post-card" data-category="tax-and-payments" data-reveal>
