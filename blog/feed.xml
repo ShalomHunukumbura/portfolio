@@ -26,6 +26,13 @@
     <description>Nobody writes log.info(password) on purpose. It gets in through f-strings, exceptions, dicts and connection strings.</description>
   </item>
   <item>
+    <title>Every job on 10,000 career pages, in a 500 MB free database</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/unlisted.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/unlisted.html</guid>
+    <pubDate>Thu, 22 Oct 2026 00:00:00 +0000</pubDate>
+    <description>Unlisted reads job listings straight from the systems companies post them on, works out where a &quot;remote&quot; role can really be done from, and fits it all in a free Postgres. The hard part was the 500 MB.</description>
+  </item>
+  <item>
     <title>A PayHere handler can check the signature and still give away 500 credits</title>
     <link>https://shalomhunukumbura.github.io/portfolio/blog/payhere-sim.html</link>
     <guid>https://shalomhunukumbura.github.io/portfolio/blog/payhere-sim.html</guid>

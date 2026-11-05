@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>Every job on 10,000 career pages, in a 500 MB free database | Shalom Hunukumbura</title>
+    <meta name="description" content="Unlisted reads job listings straight from the systems companies post them on, works out where a &#34;remote&#34; role can really be done from, and fits it all in a free Postgres. The hard part was the 500 MB." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Every job on 10,000 career pages, in a 500 MB free database" />
+    <meta property="og:description" content="Unlisted reads job listings straight from the systems companies post them on, works out where a &#34;remote&#34; role can really be done from, and fits it all in a free Postgres. The hard part was the 500 MB." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/unlisted.html" />
+    <meta property="article:published_time" content="2026-10-22" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/unlisted.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>Products</span>
+            <time datetime="2026-10-22">22 Oct 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>Every job on 10,000 career pages, in a 500 MB free database</h1>
+          <p class="post-lead">Unlisted reads job listings straight from the systems companies post them on, works out where a &#34;remote&#34; role can really be done from, and fits it all in a free Postgres. The hard part was the 500 MB.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">Unlisted <span>Job search, Next.js and Python</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/unlisted" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#remote-isnt-an-answer">“Remote” isn’t an answer</a></li>
+              <li><a href="#finding-10000-boards">Finding 10,000 boards</a></li>
+              <li><a href="#the-500-mb-problem">The 500 MB problem</a></li>
+              <li><a href="#never-trust-an-empty-answer">Never trust an empty answer</a></li>
+              <li><a href="#a-feed-for-one-person-with-no-account">A feed for one person, with no account</a></li>
+              <li><a href="#what-id-do-again">What I’d do again</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Almost every company&rsquo;s careers page is run by an applicant tracking system: Greenhouse,
+Ashby, Lever, Recruitee. That&rsquo;s where a role appears first. Some get cross-posted to
+LinkedIn and job boards days later. Many never do, and you only find them if you already
+know the company.</p>
+<p><a href="https://github.com/ShalomHunukumbura/unlisted" target="_blank" rel="noopener noreferrer">Unlisted</a> reads those career pages
+directly, across more than 10,000 companies, and puts every role in one search. Each listing
+links to the employer&rsquo;s own apply page, and each job page checks with the employer&rsquo;s board,
+live, that the role is still open.</p>
+<p>For anyone looking for remote work from Sri Lanka, two more things waste time. Roles found through
+the usual sites have often been open for weeks, with hundreds of applicants. And &ldquo;remote&rdquo;
+often means &ldquo;remote, if you live in the US&rdquo;.</p>
+<h2 id="remote-isnt-an-answer">&ldquo;Remote&rdquo; isn&rsquo;t an answer</h2>
+<p>A job board&rsquo;s <code>remote: true</code> tells you almost nothing. &ldquo;Remote - Portugal&rdquo; is remote, and
+you can&rsquo;t apply from Colombo. So every remote role in Unlisted gets one more field,
+<code>open_to</code>: anywhere, a region (EU, APAC, LATAM…), or one country. Here&rsquo;s the classifier on
+real location strings:</p>
+<pre class="term"><code><span class="t-cmd">$ python -c &quot;from jobsite.remote_scope import classify; ...&quot;</span>
+'Remote'                                 -&gt; anywhere
+'Remote - Worldwide'                     -&gt; anywhere
+'Remote: United States'                  -&gt; country
+'Argentina - Fully Remote'               -&gt; country
+'Anywhere in Belgium'                    -&gt; country
+'Remote (EMEA)'                          -&gt; region
+'Remote, APAC'                           -&gt; region
+'Canada - Remote (ON, AB, BC only)'      -&gt; country
+'Remote (must overlap with PST)'         -&gt; country</code></pre>
+<p>It&rsquo;s pessimistic on purpose. If a remote role names any place it recognises, the role is
+restricted, even when the wording says &ldquo;fully remote&rdquo; or &ldquo;anywhere&rdquo;. And if there&rsquo;s text it
+can&rsquo;t place at all, like that last line, it assumes a restriction too. The costs aren&rsquo;t
+equal: showing a job you can&rsquo;t apply to wastes real time, while hiding a vague one only costs a
+little recall.</p>
+<p>The filter people use is &ldquo;Remote, open to Sri Lanka&rdquo;: unrestricted roles, plus APAC-wide
+ones, plus roles open to India or Sri Lanka.</p>
+<h2 id="finding-10000-boards">Finding 10,000 boards</h2>
+<p>No applicant tracking system will list its customers, and there&rsquo;s no public dataset that
+maps companies to their boards. That was the hard part of getting data at all.</p>
+<p>The trick is that every supported system answers a clean 404 for a board that doesn&rsquo;t
+exist. So <code>jobsite discover</code> takes plain company names, tries the likely slugs on each
+system, and keeps what answers. Boards with no jobs are rejected, because abandoned empty
+boards are common: Vercel has an empty Ashby board next to its real Greenhouse one, so the
+board with the most jobs wins. For the long tail, it starts from an
+<a href="https://github.com/kalil0321/ats-scrapers" target="_blank" rel="noopener noreferrer">MIT-licensed list</a> of 13,045 boards. A sample
+check found about 87% still live, and every token is validated before it&rsquo;s used.</p>
+<p>All of these are public, documented APIs. The sync sends a User-Agent with contact details,
+stays at 5 requests a second per system, honours <code>Retry-After</code>, and checks boards with
+open roles every two hours and quiet ones every six.</p>
+<h2 id="the-500-mb-problem">The 500 MB problem</h2>
+<p>The public copy runs on free plans, so the database is a free Postgres with about 500 MB.
+On the first full sync there were <strong>227,719</strong> open jobs across all the boards, and 1.16 GB
+of them. But 82% had been posted more than two weeks earlier. A role that&rsquo;s been open
+that long has its applicants already, so keeping only recent jobs was the right product
+call and the only way to fit.</p>
+<p>Two weeks didn&rsquo;t fit for long, though. The commit history is a record of the database
+filling up:</p>
+<ul>
+<li><strong>Indexes.</strong> The search index stored every word&rsquo;s position in every description, which
+  only quoted phrases need. Description words now go in without positions, and quoted
+  phrases search a small title, location and team index instead: 195 MB down to 124 MB.</li>
+<li><strong>Dead rows.</strong> Freshly loaded, two weeks of jobs was about 390 MB. Then it reached
+  489 MB in a day. When Postgres updates a row it writes a new version and leaves the old
+  one behind; it reuses that space later, but never gives it back. A database that&rsquo;s
+  constantly updated grows past its fresh size.</li>
+<li><strong>One setting, 20,000 writes.</strong> Cutting the window from 14 days to 7 should have shrunk
+  the database. Instead the next sync marked every job past the new limit as closed, which
+  rewrote about 20,000 rows at once and filled the disk. Now jobs past the limit are
+  deleted straight away and never closed first.</li>
+<li><strong>A field that would rewrite everything.</strong> Pay read from a description is left out of a
+  job&rsquo;s change fingerprint. With it in, adding pay extraction would have changed the
+  fingerprint of every job with pay, and the next sync would have rewritten all of them
+  together.</li>
+</ul>
+<p>It now keeps three days, plus a small copy of each week&rsquo;s roles for the weekly report,
+about 5 MB a week. The lesson I keep coming back to: on a small database, how many rows
+you <em>write at once</em> matters more than how many you keep.</p>
+<p>The other free-plan limit was compute, not storage. In October the first database host&rsquo;s
+monthly compute hours ran out on the 20th, because every page view queried Postgres and
+crawlers never stop. Now pages read from a cache that&rsquo;s refreshed after each sync, and the sync
+itself downloads everything with no database connection open, then writes it all in one
+burst of under a minute.</p>
+<h2 id="never-trust-an-empty-answer">Never trust an empty answer</h2>
+<p>One bug class worries me more than any other in a scraper: an upstream hiccup that looks
+like real data. If a board returns zero jobs, the naive sync closes every role that
+company had. One bad response, and a whole company disappears from the site.</p>
+<p>So there&rsquo;s a guard. If a board comes back empty while Unlisted holds more than five open
+roles from it, the run is marked <code>suspicious</code> and closes nothing. A company really closing
+every role at once is rare. A flaky response is not.</p>
+<h2 id="a-feed-for-one-person-with-no-account">A feed for one person, with no account</h2>
+<p>The &ldquo;For you&rdquo; page ranks every role for one person, from the roles and skills they want
+and, optionally, their CV. The CV never leaves the browser: pdf.js reads the text, and
+<a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener noreferrer">Transformers.js</a> runs a small embedding model
+(<code>all-MiniLM-L6-v2</code>, 23 MB) on the page. Only 384 numbers are saved. The worker embeds
+jobs with the same model through ONNX Runtime. Its vectors match the full-precision model
+to five decimal places, and the 8-bit version the browser runs is 0.994 cosine-similar.</p>
+<p>The first version of that query took 8 seconds. Two changes brought it to about 100 ms:
+looking up skills through the indexes before joining, instead of letting Postgres unpack a
+large text column for every row and skill, and turning off JIT for it, because Postgres
+guessed the query was expensive and spent 2 seconds compiling it.</p>
+<h2 id="what-id-do-again">What I&rsquo;d do again</h2>
+<ul>
+<li><strong>Decide what a wrong answer costs.</strong> The remote classifier and the pay parser both
+  prefer saying nothing over saying something false, because a false &ldquo;open to anywhere&rdquo; or
+  a made-up salary costs the user more than a blank.</li>
+<li><strong>On a small database, count writes.</strong> Every near-disaster came from one change that
+  rewrote thousands of rows together.</li>
+<li><strong>Treat empty upstream data as suspicious.</strong> Absence is the easiest thing for a broken
+  source to fake.</li>
+</ul>
+<p>The workers have 184 tests, mostly on the messy parts: locations, HTML sanitising, each
+system&rsquo;s quirks, experience levels and pay. Real-world data is messy enough to break
+anything that isn&rsquo;t tested against it.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#nextjs</span><span>#postgres</span><span>#scraping</span><span>#srilanka</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="log-leak.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">6 ways personal data gets into your Python logs (and how your tests can catch it)</span>
+            </a>
+            <a class="pager-card is-older" href="payhere-sim.html">
+              <span class="kind">Older</span>
+              <span class="pager-title">A PayHere handler can check the signature and still give away 500 credits</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>
