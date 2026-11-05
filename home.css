@@ -1042,6 +1042,23 @@ code {
 
 /* ---------- Responsive ---------- */
 
+.site-nav a,
+.brand-name {
+  white-space: nowrap;
+}
+
+/* Six links fit beside the full name above 1040px; between that and the menu
+   breakpoint, the mark alone stands for the name. */
+@media (max-width: 1040px) {
+  .site-nav {
+    gap: 22px;
+  }
+
+  .brand-name {
+    display: none;
+  }
+}
+
 @media (max-width: 1100px) {
   .hero-copy {
     max-width: 560px;
