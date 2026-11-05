@@ -53,5 +53,12 @@
     <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
     <description>They pass code review and they pass tests. Then they meet a table with real data.</description>
   </item>
+  <item>
+    <title>Embeddings and keyword search miss different questions. That&#x27;s why you use both.</title>
+    <link>https://shalomhunukumbura.github.io/portfolio/blog/docsage.html</link>
+    <guid>https://shalomhunukumbura.github.io/portfolio/blog/docsage.html</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+    <description>DocSage answers questions from 37 engineering documents and cites every claim. I built the retrieval without a framework, measured each piece on 54 questions, and kept the refusal threshold that scored worse on paper.</description>
+  </item>
 </channel>
 </rss>

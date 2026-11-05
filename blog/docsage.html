@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9ec5c'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%230c0d0f'%3ESH%3C/text%3E%3C/svg%3E" />
+    <link rel="alternate" type="application/rss+xml" title="Shalom Hunukumbura, blog" href="https://shalomhunukumbura.github.io/portfolio/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <script src="../boot.js"></script>
+    <title>Embeddings and keyword search miss different questions. That&#39;s why you use both. | Shalom Hunukumbura</title>
+    <meta name="description" content="DocSage answers questions from 37 engineering documents and cites every claim. I built the retrieval without a framework, measured each piece on 54 questions, and kept the refusal threshold that scored worse on paper." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Embeddings and keyword search miss different questions. That&#39;s why you use both." />
+    <meta property="og:description" content="DocSage answers questions from 37 engineering documents and cites every claim. I built the retrieval without a framework, measured each piece on 54 questions, and kept the refusal threshold that scored worse on paper." />
+    <meta property="og:url" content="https://shalomhunukumbura.github.io/portfolio/blog/docsage.html" />
+    <meta property="article:published_time" content="2026-09-30" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://shalomhunukumbura.github.io/portfolio/blog/docsage.html" />
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Shalom Hunukumbura, home">
+          <span class="brand-mark" aria-hidden="true">SH</span>
+          <span class="brand-name">Shalom Hunukumbura</span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="../index.html#experience">Experience</a>
+          <a href="../index.html#projects">Projects</a>
+          <a href="../index.html#skills">Skills</a>
+          <a href="https://shalomhunukumbura.github.io/tools/">Tools</a>
+          <a href="../blog.html" aria-current="page">Blog</a>
+          <a href="../learning-log.html">Learning Log</a>
+        </nav>
+        <div class="topbar-actions">
+          <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="post">
+        <header class="post-head wrap">
+          <a class="back-link" href="../blog.html"><span aria-hidden="true">←</span> All posts</a>
+          <p class="post-meta">
+            <span>AI engineering</span>
+            <time datetime="2026-09-30">30 Sep 2026</time>
+            <span>6 min read</span>
+          </p>
+          <h1>Embeddings and keyword search miss different questions. That&#39;s why you use both.</h1>
+          <p class="post-lead">DocSage answers questions from 37 engineering documents and cites every claim. I built the retrieval without a framework, measured each piece on 54 questions, and kept the refusal threshold that scored worse on paper.</p>
+          <div class="project-box">
+            <div>
+              <p class="kind">The project</p>
+              <p class="project-name">DocSage <span>RAG in plain Python</span></p>
+            </div>
+            <div class="links">
+              <a class="text-link" href="https://github.com/ShalomHunukumbura/docsage" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-layout wrap">
+          <nav class="post-toc" aria-label="On this page">
+            <p class="kind">On this page</p>
+            <ol>
+              <li><a href="#measure-retrieval-before-you-tune-anything">Measure retrieval before you tune anything</a></li>
+              <li><a href="#they-fail-on-different-questions">They fail on different questions</a></li>
+              <li><a href="#chunks-that-know-where-they-came-from">Chunks that know where they came from</a></li>
+              <li><a href="#the-threshold-that-scored-worse-on-paper">The threshold that scored worse on paper</a></li>
+              <li><a href="#what-i-took-from-it">What I took from it</a></li>
+            </ol>
+          </nav>
+          <div class="prose">
+<p>Ask <a href="https://github.com/ShalomHunukumbura/docsage" target="_blank" rel="noopener noreferrer">DocSage</a> &ldquo;How should an app store its
+configuration?&rdquo; and it answers from the Twelve-Factor App, with numbered citations that
+link to the exact section. Ask it who won the 2018 World Cup and it says it doesn&rsquo;t know,
+without calling the LLM at all.</p>
+<p>It&rsquo;s retrieval-augmented generation over 37 openly licensed engineering documents: the
+Twelve-Factor App, Google&rsquo;s code review guide, the OWASP Top 10, SemVer, Conventional
+Commits and three PEPs. I wrote it without LangChain or LlamaIndex. That wasn&rsquo;t to prove a
+point. In RAG, the answer can only be as good as the passages the model is given, and I
+wanted every step that picks those passages to be a small file I could read, measure and
+change.</p>
+<h2 id="measure-retrieval-before-you-tune-anything">Measure retrieval before you tune anything</h2>
+<p>Most RAG demos are judged by reading a few answers and deciding they look good. That
+tells you nothing about the questions you didn&rsquo;t try. So before tuning anything, I wrote
+an evaluation set: 42 questions the documents can answer, each labelled with the document
+that answers it, and 12 they can&rsquo;t.</p>
+<p>The questions paraphrase the documents instead of quoting them. A question that copies the
+document&rsquo;s wording gives keyword search a free win and makes the numbers look better than
+real use.</p>
+<p>The eval scores retrieval only, with no LLM involved. It asks one thing: is a passage from
+the right document near the top? Here it is, rerun today against the saved index:</p>
+<pre class="term"><code><span class="t-cmd">$ python eval/run_eval.py</span>
+42 answerable and 12 unanswerable questions over 37 documents (312 chunks of up to 200 words).
+
+| Mode    | Hit@1 | Hit@3 | Hit@5 | MRR   |
+| dense   | 86%   | 93%   | 100%  | 0.911 |
+| keyword | 86%   | 95%   | 98%   | 0.915 |
+| hybrid  | 93%   | 100%  | 100%  | 0.960 |</code></pre>
+<p>Dense is embedding search (<code>all-MiniLM-L6-v2</code> in an exact FAISS index). Keyword is BM25.
+Hybrid merges the two.</p>
+<h2 id="they-fail-on-different-questions">They fail on different questions</h2>
+<p>Dense and keyword search score the same at the top, 86%, but they don&rsquo;t miss the same
+questions. That&rsquo;s the whole case for hybrid search, and two questions from the eval show
+it:</p>
+<pre class="term"><code># rank of the right document, for two of the eval's questions
+What should a process do when it receives SIGTERM?
+  dense    rank 4
+  keyword  rank 1
+  hybrid   rank 2
+Should my app write and rotate its own log files?
+  dense    rank 1
+  keyword  rank 4
+  hybrid   rank 1</code></pre>
+<p>Embeddings are bad at exact terms. &ldquo;SIGTERM&rdquo; is a precise token, and the embedding for the
+question lands closer to passages about processes and concurrency in general than to the
+one that names the signal. BM25 finds it straight away.</p>
+<p>BM25 is bad at paraphrase. The Twelve-Factor page on logs never says &ldquo;rotate my own log
+files&rdquo; the way the question does, so BM25 ranks a Conventional Commits page first, because
+it happens to share more of the question&rsquo;s words. The embedding understands what&rsquo;s being
+asked.</p>
+<p>Hybrid search runs both and merges them with reciprocal rank fusion. Each passage scores
+<code>1 / (60 + rank)</code> in each list, and the scores add up:</p>
+<pre><code class="language-python">for ranking in rankings:
+    for rank, (pos, _) in enumerate(ranking, start=1):
+        fused[pos] = fused.get(pos, 0.0) + 1.0 / (RRF_K + rank)
+</code></pre>
+<p>The 60 is the usual constant, and it&rsquo;s what makes fusion work. It flattens the gap between
+first and second place, so a passage both methods rank well beats one that only a single
+method ranked first. Fusion uses only ranks, so it never has to compare a cosine
+similarity with a BM25 score, which are on different scales.</p>
+<p>That&rsquo;s five lines, and BM25 itself is about fifty. The result: the right document first for
+93% of questions instead of 86%, and every question&rsquo;s answer in the top 3.</p>
+<p>To be honest about the size: 93% against 86% of 42 questions is 39 against 36. Three
+questions. It&rsquo;s a real, repeatable difference on this set, not a benchmark result, and the
+more useful number is the second one: hybrid has no question outside its top 3, while each
+method alone has some at rank 4 or lower.</p>
+<h2 id="chunks-that-know-where-they-came-from">Chunks that know where they came from</h2>
+<p>A passage like &ldquo;Use a safe API… parameterized queries&rdquo; doesn&rsquo;t always say <em>injection</em>. Cut out of its page, neither search method knows what it&rsquo;s
+about.</p>
+<p>So documents are split along their own headings, lists and code blocks are kept whole, and
+each chunk is embedded with its heading path in front: <code>A03: Injection &gt; How to Prevent</code>.
+Both kinds of search get the context the text itself leaves out.</p>
+<p>I also measured chunk size. 100, 200 and 300 words scored an MRR of 0.966, 0.960 and 0.964,
+which is noise on 42 questions. The default stays at 200 words, which gives the model more
+context per citation. Knowing that a setting doesn&rsquo;t matter is a result too.</p>
+<h2 id="the-threshold-that-scored-worse-on-paper">The threshold that scored worse on paper</h2>
+<p>DocSage refuses before calling the LLM when the closest passage in the whole index is
+below a cosine similarity threshold. The eval sweeps it:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Answerable questions let through</th>
+<th>Unanswerable questions stopped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.30</td>
+<td>100%</td>
+<td>75%</td>
+</tr>
+<tr>
+<td><strong>0.35 (default)</strong></td>
+<td><strong>100%</strong></td>
+<td><strong>83%</strong></td>
+</tr>
+<tr>
+<td>0.40</td>
+<td>98%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>88%</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table></div>
+<p>On paper, 0.40 wins: it stops every unanswerable question and loses only one answerable
+one. I kept 0.35, and the reason is in the similarity scores:</p>
+<pre class="term"><code># closest passage's similarity, per question
+0.115  Who won the 2018 World Cup?
+0.370  How do I write a SQL window function?
+0.375  Which algorithms should be used to hash stored passwords?
+0.395  How do I set up a Python virtual environment?</code></pre>
+<p>The password question is real: OWASP answers it. The other two are near misses that the
+documents don&rsquo;t cover. And the real one sits <em>between</em> them. No threshold separates those
+cleanly, and picking one that happens to fit 12 unanswerable examples would be fitting to
+noise.</p>
+<p>So the gate does a narrower job. It throws out the clearly off-topic questions, which score
+around 0.1 to 0.2, for free. Near misses go to the LLM, which is told to answer &ldquo;I don&rsquo;t
+know&rdquo; when the sources don&rsquo;t contain the answer. A wrong refusal costs more than one extra
+LLM call.</p>
+<h2 id="what-i-took-from-it">What I took from it</h2>
+<ul>
+<li><strong>Write the eval first.</strong> Every decision here, from hybrid search to chunk size to the
+  threshold, came from a table, not from reading three answers and liking them.</li>
+<li><strong>Use two retrievers that fail differently.</strong> Their mistakes don&rsquo;t overlap, so merging
+  them by rank fixes both.</li>
+<li><strong>Don&rsquo;t let the metric pick the threshold.</strong> The best-scoring value on 12 examples was the
+  wrong one, and only looking at the actual questions showed it.</li>
+</ul>
+<p>It runs with any OpenAI-compatible API, with Groq&rsquo;s free tier as the default. Search works
+with no key at all. The index is under 1 MB, there&rsquo;s a Docker image, and 42 tests run
+offline with a fake embedder and a fake LLM.</p>
+          </div>
+        </div>
+
+        <footer class="post-foot wrap">
+          <p class="post-tags"><span>#python</span><span>#rag</span><span>#llm</span><span>#search</span><span>#evaluation</span></p>
+          <nav class="post-pager" aria-label="More posts">
+            <a class="pager-card" href="alembic-guard.html">
+              <span class="kind">Newer</span>
+              <span class="pager-title">5 Alembic migrations that will take down your prod DB</span>
+            </a>
+          </nav>
+          <div class="post-cta">
+            <p>Building something that has to be right? I'm open to full stack and AI engineering roles.</p>
+            <a class="btn btn-primary btn-sm" href="../index.html#contact">Get in touch</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Shalom Hunukumbura</span>
+        <span class="footer-links">
+          <a href="../blog/feed.xml">RSS</a>
+          <a href="../index.html">Back to portfolio</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="../blog.js"></script>
+    <script type="module" src="../home.js"></script>
+  </body>
+</html>
